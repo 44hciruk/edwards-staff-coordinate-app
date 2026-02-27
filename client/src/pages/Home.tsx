@@ -22,14 +22,14 @@ export default function Home() {
       <header className="px-6 pt-8 pb-0 flex items-center justify-between">
         <span
           style={{
-            fontFamily: "'Noto Serif JP', serif",
-            fontSize: "0.85rem",
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "0.72rem",
             fontWeight: 300,
-            letterSpacing: "0.2em",
+            letterSpacing: "0.18em",
             color: CREAM,
           }}
         >
-          EDWARD'S
+          EDWARD'Sスタッフ専用フォーム
         </span>
         {user?.role === "admin" && (
           <Link href="/admin">
@@ -116,16 +116,15 @@ export default function Home() {
           <p
             style={{
               fontFamily: "'Zen Kaku Gothic New', sans-serif",
-              fontSize: "0.75rem",
+              fontSize: "0.68rem",
               fontWeight: 300,
-              letterSpacing: "0.08em",
-              lineHeight: 2,
+              letterSpacing: "0.06em",
+              lineHeight: 1.6,
               color: MUTED,
-              maxWidth: "280px",
+              whiteSpace: "nowrap",
             }}
           >
-            着用アイテムや写真を入力して送信してください。
-            情報はECサイトに掲載されます。
+            着用アイテムや写真を入力して送信してください。情報はECサイトに掃載されます。
           </p>
         </div>
 
@@ -155,7 +154,7 @@ export default function Home() {
               onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
               onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
             >
-              <span>投稿フォームへ</span>
+              <span>フォームへ進む</span>
               <ArrowUpRight style={{ width: 18, height: 18 }} />
             </button>
           </Link>

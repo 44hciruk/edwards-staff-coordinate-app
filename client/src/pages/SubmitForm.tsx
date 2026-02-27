@@ -451,12 +451,7 @@ export default function SubmitForm() {
               </label>
               <Textarea
                 id="outfitDescription"
-                placeholder={`例：
-ジャケット / チャコールグレー スーツジャケット（品番: HS-504-D）
-スラックス / ネイビーウールスラックス（品番: HS-505-N）
-シャツ / ホワイトドレスシャツ（品番: HS-201-W）
-ネクタイ / シルクストライプタイ（品番: HT-102-B）
-シューズ / ブラックレザーオックスフォード`}
+                placeholder={`例：ジャケット / チャコールグレー スーツジャケット（品番: HS-504-D）`}
                 rows={8}
                 {...register("outfitDescription")}
                 style={{
