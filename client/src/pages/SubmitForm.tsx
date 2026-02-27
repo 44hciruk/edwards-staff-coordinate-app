@@ -8,13 +8,16 @@ import { toast } from "sonner";
 import { Camera, X, CheckCircle, Loader2, ImagePlus, ArrowLeft, Send } from "lucide-react";
 import { Link } from "wouter";
 
-// ネイビーカラーパレット（トップページと統一）
+// 白背景・ネイビー差し色パレット
+const BG = "#ffffff";
+const BG_SOFT = "#f7f8fa";
 const NAVY = "#0d1b2a";
 const NAVY_LIGHT = "#1a2e42";
-const NAVY_BORDER = "#243a52";
-const CREAM = "#f0ede8";
-const MUTED = "#7a9ab5";
-const MUTED_DARK = "#4a6a85";
+const NAVY_BORDER = "#d0d9e3";
+const NAVY_ACCENT = "#243a52";
+const TEXT = "#0d1b2a";
+const TEXT_MUTED = "#6b8099";
+const TEXT_LIGHT = "#9ab0c4";
 
 const schema = z.object({
   staffName: z.string().min(1, "お名前を入力してください").max(100),
@@ -48,19 +51,19 @@ const STORES = [
   "EDWARD'S 本社",
 ];
 
-// 共通インプットスタイル
 const inputStyle: React.CSSProperties = {
   width: "100%",
-  background: NAVY_LIGHT,
+  background: BG_SOFT,
   border: `1px solid ${NAVY_BORDER}`,
   borderRadius: "6px",
-  color: CREAM,
+  color: TEXT,
   fontFamily: "'Zen Kaku Gothic New', sans-serif",
-  fontSize: "0.85rem",
+  fontSize: "0.9rem",
   fontWeight: 300,
   letterSpacing: "0.04em",
-  padding: "10px 14px",
+  padding: "11px 14px",
   outline: "none",
+  transition: "border-color 0.2s",
 };
 
 const labelStyle: React.CSSProperties = {
@@ -68,24 +71,24 @@ const labelStyle: React.CSSProperties = {
   fontSize: "0.6rem",
   letterSpacing: "0.25em",
   textTransform: "uppercase" as const,
-  color: MUTED,
+  color: TEXT_MUTED,
   display: "block",
   marginBottom: "6px",
 };
 
 const sectionTitleStyle: React.CSSProperties = {
   fontFamily: "'DM Sans', sans-serif",
-  fontSize: "0.6rem",
+  fontSize: "0.58rem",
   letterSpacing: "0.3em",
   textTransform: "uppercase" as const,
-  color: MUTED_DARK,
+  color: TEXT_LIGHT,
   marginBottom: "16px",
 };
 
 const dividerStyle: React.CSSProperties = {
   width: "100%",
   height: "1px",
-  background: `linear-gradient(to right, ${NAVY_BORDER}, transparent)`,
+  background: NAVY_BORDER,
   margin: "24px 0",
 };
 
@@ -171,36 +174,29 @@ export default function SubmitForm() {
     return (
       <div
         className="min-h-screen flex flex-col items-center justify-center px-6 py-16"
-        style={{ background: NAVY, color: CREAM }}
+        style={{ background: BG, color: TEXT }}
       >
         <div className="text-center max-w-sm">
-          <CheckCircle
-            style={{ width: 48, height: 48, color: "#4a9a7a", margin: "0 auto 24px" }}
-            strokeWidth={1.5}
-          />
-          <h2
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "1.8rem",
-              fontWeight: 300,
-              letterSpacing: "-0.01em",
-              color: CREAM,
-              marginBottom: "12px",
-            }}
-          >
+          <div style={{
+            width: 56, height: 56, borderRadius: "50%",
+            background: "#eaf5f0", display: "flex", alignItems: "center",
+            justifyContent: "center", margin: "0 auto 24px",
+          }}>
+            <CheckCircle style={{ width: 28, height: 28, color: "#3a9a6a" }} strokeWidth={1.5} />
+          </div>
+          <h2 style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "1.6rem", fontWeight: 300,
+            letterSpacing: "-0.01em", color: TEXT, marginBottom: "12px",
+          }}>
             ありがとうございます
           </h2>
-          <p
-            style={{
-              fontFamily: "'Zen Kaku Gothic New', sans-serif",
-              fontSize: "0.75rem",
-              fontWeight: 300,
-              letterSpacing: "0.08em",
-              lineHeight: 2,
-              color: MUTED,
-              marginBottom: "32px",
-            }}
-          >
+          <p style={{
+            fontFamily: "'Zen Kaku Gothic New', sans-serif",
+            fontSize: "0.8rem", fontWeight: 300,
+            letterSpacing: "0.06em", lineHeight: 2,
+            color: TEXT_MUTED, marginBottom: "32px",
+          }}>
             コーディネートの投稿を受け付けました。<br />
             情報はECサイトに掲載されます。
           </p>
@@ -209,37 +205,25 @@ export default function SubmitForm() {
             <button
               onClick={() => setSubmitted(false)}
               style={{
-                width: "100%",
-                height: "52px",
-                background: CREAM,
-                color: NAVY,
-                border: "none",
-                borderRadius: "6px",
+                width: "100%", height: "52px",
+                background: NAVY, color: "#f0ede8",
+                border: "none", borderRadius: "6px",
                 fontFamily: "'DM Sans', sans-serif",
-                fontSize: "0.75rem",
-                fontWeight: 400,
-                letterSpacing: "0.15em",
-                cursor: "pointer",
+                fontSize: "0.75rem", fontWeight: 400,
+                letterSpacing: "0.15em", cursor: "pointer",
               }}
             >
               続けて投稿する
             </button>
             <Link href="/">
-              <button
-                style={{
-                  width: "100%",
-                  height: "52px",
-                  background: "transparent",
-                  color: MUTED,
-                  border: `1px solid ${NAVY_BORDER}`,
-                  borderRadius: "6px",
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: "0.75rem",
-                  fontWeight: 400,
-                  letterSpacing: "0.15em",
-                  cursor: "pointer",
-                }}
-              >
+              <button style={{
+                width: "100%", height: "52px",
+                background: "transparent", color: TEXT_MUTED,
+                border: `1px solid ${NAVY_BORDER}`, borderRadius: "6px",
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "0.75rem", fontWeight: 400,
+                letterSpacing: "0.15em", cursor: "pointer",
+              }}>
                 トップに戻る
               </button>
             </Link>
@@ -250,51 +234,32 @@ export default function SubmitForm() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: NAVY, color: CREAM }}>
+    <div className="min-h-screen" style={{ background: BG, color: TEXT }}>
       {/* Header */}
-      <header
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 10,
-          background: `${NAVY}f0`,
-          backdropFilter: "blur(12px)",
-          borderBottom: `1px solid ${NAVY_BORDER}`,
-          padding: "0 24px",
-          height: "56px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
+      <header style={{
+        position: "sticky", top: 0, zIndex: 10,
+        background: `${BG}f0`, backdropFilter: "blur(12px)",
+        borderBottom: `1px solid ${NAVY_BORDER}`,
+        padding: "0 24px", height: "56px",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+      }}>
         <Link href="/">
-          <button
-            style={{
-              background: "transparent",
-              border: "none",
-              color: MUTED,
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "0.65rem",
-              letterSpacing: "0.15em",
-            }}
-          >
+          <button style={{
+            background: "transparent", border: "none",
+            color: TEXT_MUTED, cursor: "pointer",
+            display: "flex", alignItems: "center", gap: "6px",
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "0.65rem", letterSpacing: "0.15em",
+          }}>
             <ArrowLeft style={{ width: 14, height: 14 }} />
             Back
           </button>
         </Link>
-        <span
-          style={{
-            fontFamily: "'Noto Serif JP', serif",
-            fontSize: "0.8rem",
-            fontWeight: 300,
-            letterSpacing: "0.2em",
-            color: CREAM,
-          }}
-        >
+        <span style={{
+          fontFamily: "'DM Sans', sans-serif",
+          fontSize: "0.75rem", fontWeight: 300,
+          letterSpacing: "0.25em", color: NAVY,
+        }}>
           EDWARD'S
         </span>
         <div style={{ width: 48 }} />
@@ -304,16 +269,11 @@ export default function SubmitForm() {
         {/* Page title */}
         <div style={{ marginBottom: "32px" }}>
           <p style={sectionTitleStyle}>Coordinate Post</p>
-          <h2
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "1.6rem",
-              fontWeight: 300,
-              letterSpacing: "-0.01em",
-              color: CREAM,
-              lineHeight: 1.2,
-            }}
-          >
+          <h2 style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "1.6rem", fontWeight: 300,
+            letterSpacing: "-0.01em", color: TEXT, lineHeight: 1.2,
+          }}>
             コーディネート<br />投稿フォーム
           </h2>
         </div>
@@ -322,38 +282,35 @@ export default function SubmitForm() {
           {/* ── 写真アップロード ── */}
           <div style={{ marginBottom: "8px" }}>
             <label style={labelStyle}>
-              写真 <span style={{ color: MUTED_DARK }}>（最大10枚）</span>
+              写真 <span style={{ color: TEXT_LIGHT }}>（最大10枚）</span>
             </label>
-
             <div
               onClick={() => fileInputRef.current?.click()}
               onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
               onDragLeave={() => setDragOver(false)}
               onDrop={handleDrop}
               style={{
-                border: `1px dashed ${dragOver ? CREAM : NAVY_BORDER}`,
-                borderRadius: "8px",
-                padding: "32px 16px",
-                textAlign: "center",
-                cursor: "pointer",
-                background: dragOver ? `${NAVY_LIGHT}80` : "transparent",
+                border: `1.5px dashed ${dragOver ? NAVY_ACCENT : NAVY_BORDER}`,
+                borderRadius: "8px", padding: "32px 16px",
+                textAlign: "center", cursor: "pointer",
+                background: dragOver ? "#f0f4f8" : BG_SOFT,
                 transition: "all 0.2s",
               }}
             >
               {uploading ? (
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
-                  <Loader2 style={{ width: 28, height: 28, color: MUTED }} className="animate-spin" strokeWidth={1.5} />
-                  <span style={{ fontFamily: "'Zen Kaku Gothic New', sans-serif", fontSize: "0.75rem", color: MUTED }}>
+                  <Loader2 style={{ width: 28, height: 28, color: TEXT_MUTED }} className="animate-spin" strokeWidth={1.5} />
+                  <span style={{ fontFamily: "'Zen Kaku Gothic New', sans-serif", fontSize: "0.75rem", color: TEXT_MUTED }}>
                     アップロード中...
                   </span>
                 </div>
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
-                  <ImagePlus style={{ width: 28, height: 28, color: MUTED_DARK }} strokeWidth={1.5} />
-                  <span style={{ fontFamily: "'Zen Kaku Gothic New', sans-serif", fontSize: "0.8rem", color: MUTED }}>
+                  <ImagePlus style={{ width: 28, height: 28, color: TEXT_LIGHT }} strokeWidth={1.5} />
+                  <span style={{ fontFamily: "'Zen Kaku Gothic New', sans-serif", fontSize: "0.85rem", color: TEXT_MUTED }}>
                     タップして写真を選択
                   </span>
-                  <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", color: MUTED_DARK, letterSpacing: "0.1em" }}>
+                  <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", color: TEXT_LIGHT, letterSpacing: "0.1em" }}>
                     またはドラッグ＆ドロップ
                   </span>
                 </div>
@@ -364,24 +321,28 @@ export default function SubmitForm() {
             {photos.length > 0 && (
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px", marginTop: "12px" }}>
                 {photos.map((photo, i) => (
-                  <div key={i} style={{ position: "relative", aspectRatio: "1", borderRadius: "6px", overflow: "hidden", background: NAVY_LIGHT }}>
+                  <div key={i} style={{
+                    position: "relative", aspectRatio: "1",
+                    borderRadius: "6px", overflow: "hidden", background: BG_SOFT,
+                    border: `1px solid ${NAVY_BORDER}`,
+                  }}>
                     <img src={photo.preview} alt={`写真 ${i + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     <button
                       type="button"
                       onClick={() => removePhoto(i)}
                       style={{
                         position: "absolute", top: "4px", right: "4px",
-                        background: "rgba(0,0,0,0.6)", border: "none", borderRadius: "50%",
-                        width: "20px", height: "20px", display: "flex", alignItems: "center",
-                        justifyContent: "center", cursor: "pointer",
+                        background: "rgba(255,255,255,0.9)", border: "none",
+                        borderRadius: "50%", width: "20px", height: "20px",
+                        display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
                       }}
                     >
-                      <X style={{ width: 10, height: 10, color: "#fff" }} />
+                      <X style={{ width: 10, height: 10, color: NAVY }} />
                     </button>
                     {i === 0 && (
                       <span style={{
                         position: "absolute", bottom: "4px", left: "4px",
-                        background: "rgba(0,0,0,0.6)", color: "#fff",
+                        background: NAVY, color: "#f0ede8",
                         fontSize: "0.55rem", padding: "2px 6px", borderRadius: "3px",
                         fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.1em",
                       }}>
@@ -396,11 +357,11 @@ export default function SubmitForm() {
                     onClick={() => fileInputRef.current?.click()}
                     style={{
                       aspectRatio: "1", borderRadius: "6px",
-                      border: `1px dashed ${NAVY_BORDER}`, background: "transparent",
+                      border: `1.5px dashed ${NAVY_BORDER}`, background: BG_SOFT,
                       display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
                     }}
                   >
-                    <Camera style={{ width: 18, height: 18, color: MUTED_DARK }} strokeWidth={1.5} />
+                    <Camera style={{ width: 18, height: 18, color: TEXT_LIGHT }} strokeWidth={1.5} />
                   </button>
                 )}
               </div>
@@ -415,7 +376,7 @@ export default function SubmitForm() {
 
             <div style={{ marginBottom: "16px" }}>
               <label htmlFor="staffName" style={labelStyle}>
-                お名前 <span style={{ color: "#e05a5a" }}>*</span>
+                お名前 <span style={{ color: "#c0392b" }}>*</span>
               </label>
               <input
                 id="staffName"
@@ -424,26 +385,26 @@ export default function SubmitForm() {
                 style={inputStyle}
               />
               {errors.staffName && (
-                <p style={{ color: "#e05a5a", fontSize: "0.7rem", marginTop: "4px" }}>{errors.staffName.message}</p>
+                <p style={{ color: "#c0392b", fontSize: "0.7rem", marginTop: "4px" }}>{errors.staffName.message}</p>
               )}
             </div>
 
             <div style={{ marginBottom: "16px" }}>
               <label htmlFor="storeName" style={labelStyle}>
-                所属店舗 <span style={{ color: "#e05a5a" }}>*</span>
+                所属店舗 <span style={{ color: "#c0392b" }}>*</span>
               </label>
               <select
                 id="storeName"
                 {...register("storeName")}
-                style={{ ...inputStyle, appearance: "none" as const }}
+                style={{ ...inputStyle, appearance: "none" as const, color: TEXT }}
               >
-                <option value="" style={{ background: NAVY }}>店舗を選択してください</option>
+                <option value="">店舗を選択してください</option>
                 {STORES.map((s) => (
-                  <option key={s} value={s} style={{ background: NAVY }}>{s}</option>
+                  <option key={s} value={s}>{s}</option>
                 ))}
               </select>
               {errors.storeName && (
-                <p style={{ color: "#e05a5a", fontSize: "0.7rem", marginTop: "4px" }}>{errors.storeName.message}</p>
+                <p style={{ color: "#c0392b", fontSize: "0.7rem", marginTop: "4px" }}>{errors.storeName.message}</p>
               )}
             </div>
 
@@ -467,7 +428,7 @@ export default function SubmitForm() {
                     />
                     <span style={{
                       position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)",
-                      fontSize: "0.65rem", color: MUTED_DARK,
+                      fontSize: "0.65rem", color: TEXT_LIGHT,
                       fontFamily: "'Zen Kaku Gothic New', sans-serif",
                     }}>
                       {unit}
@@ -486,7 +447,7 @@ export default function SubmitForm() {
 
             <div style={{ marginBottom: "16px" }}>
               <label htmlFor="outfitDescription" style={labelStyle}>
-                着用アイテム <span style={{ color: "#e05a5a" }}>*</span>
+                着用アイテム <span style={{ color: "#c0392b" }}>*</span>
               </label>
               <Textarea
                 id="outfitDescription"
@@ -508,7 +469,7 @@ export default function SubmitForm() {
                 className="resize-y"
               />
               {errors.outfitDescription && (
-                <p style={{ color: "#e05a5a", fontSize: "0.7rem", marginTop: "4px" }}>{errors.outfitDescription.message}</p>
+                <p style={{ color: "#c0392b", fontSize: "0.7rem", marginTop: "4px" }}>{errors.outfitDescription.message}</p>
               )}
             </div>
 
@@ -538,20 +499,14 @@ export default function SubmitForm() {
             type="submit"
             disabled={isSubmitting || uploading}
             style={{
-              width: "100%",
-              height: "56px",
-              background: isSubmitting || uploading ? NAVY_LIGHT : CREAM,
-              color: isSubmitting || uploading ? MUTED : NAVY,
-              border: "none",
-              borderRadius: "6px",
+              width: "100%", height: "56px",
+              background: isSubmitting || uploading ? "#e0e8f0" : NAVY,
+              color: isSubmitting || uploading ? TEXT_MUTED : "#f0ede8",
+              border: "none", borderRadius: "6px",
               fontFamily: "'DM Sans', sans-serif",
-              fontSize: "0.75rem",
-              fontWeight: 400,
+              fontSize: "0.75rem", fontWeight: 400,
               letterSpacing: "0.15em",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "8px",
+              display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
               cursor: isSubmitting || uploading ? "not-allowed" : "pointer",
               transition: "all 0.2s",
             }}
@@ -563,17 +518,12 @@ export default function SubmitForm() {
             )}
           </button>
 
-          <p
-            style={{
-              fontFamily: "'Zen Kaku Gothic New', sans-serif",
-              fontSize: "0.65rem",
-              color: MUTED_DARK,
-              textAlign: "center",
-              marginTop: "16px",
-              letterSpacing: "0.06em",
-              paddingBottom: "32px",
-            }}
-          >
+          <p style={{
+            fontFamily: "'Zen Kaku Gothic New', sans-serif",
+            fontSize: "0.65rem", color: TEXT_LIGHT,
+            textAlign: "center", marginTop: "16px",
+            letterSpacing: "0.06em", paddingBottom: "32px",
+          }}>
             投稿内容は管理者の確認後、ECサイトに掲載されます
           </p>
         </form>

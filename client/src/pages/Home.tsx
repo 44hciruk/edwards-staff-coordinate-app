@@ -8,6 +8,7 @@ const NAVY_LIGHT = "#1a2e42";
 const NAVY_BORDER = "#243a52";
 const CREAM = "#f0ede8";
 const MUTED = "#7a9ab5";
+const MUTED_DARK = "#4a6a85";
 
 export default function Home() {
   const { user } = useAuth();
@@ -144,9 +145,9 @@ export default function Home() {
           >
             <span
               style={{
-                fontFamily: "'Noto Serif JP', serif",
-                fontSize: "0.7rem",
-                letterSpacing: "0.15em",
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "0.65rem",
+                letterSpacing: "0.2em",
                 color: MUTED,
                 fontWeight: 300,
               }}
@@ -200,29 +201,31 @@ export default function Home() {
 
       {/* Footer */}
       <footer
-        className="px-6 py-5 flex items-center justify-between"
+        className="px-6 py-5 flex flex-col gap-1"
         style={{ borderTop: `1px solid ${NAVY_BORDER}` }}
       >
-        <span
-          style={{
-            fontFamily: "'Noto Serif JP', serif",
-            fontSize: "0.65rem",
-            letterSpacing: "0.2em",
-            color: NAVY_BORDER,
-            fontWeight: 300,
-          }}
-        >
-          © EDWARD'S
-        </span>
+        <div className="flex items-center justify-between">
+          <span
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "0.65rem",
+              letterSpacing: "0.2em",
+              color: NAVY_BORDER,
+              fontWeight: 300,
+            }}
+          >
+            © EDWARD'S Staff Snap App
+          </span>
+        </div>
         <span
           style={{
             fontFamily: "'DM Sans', sans-serif",
-            fontSize: "0.6rem",
-            letterSpacing: "0.15em",
-            color: NAVY_BORDER,
+            fontSize: "0.55rem",
+            letterSpacing: "0.12em",
+            color: MUTED_DARK,
           }}
         >
-          Staff Snap App
+          Designed &amp; Developed by Shigesato Kurita
         </span>
       </footer>
     </div>
