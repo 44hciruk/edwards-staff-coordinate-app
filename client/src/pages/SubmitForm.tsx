@@ -775,7 +775,7 @@ export default function SubmitForm() {
                 </p>
                 <Textarea
                   id="outfitDescription"
-                  placeholder={`例：\nジャケット / チャコールグレー スーツジャケット（品番: HS-504-D）/ Lサイズ\nパンツ / ネイビー スラックス（品番: PT-201）/ 82cm\nシャツ / ホワイト ドレスシャツ（品番: SH-110）/ 首回り39cm`}
+                  placeholder={`例：\nジャケット / グレー / HS-504-D / L\nパンツ / ネイビー / PT-201 / 82cm\nシャツ / 白 / SH-110 / 首39cm`}
                   rows={8}
                   {...register("outfitDescription")}
                   style={{
@@ -797,7 +797,7 @@ export default function SubmitForm() {
                 </label>
                 <Textarea
                   id="comment"
-                  placeholder="例：今季のトレンドを取り入れながら、紳士服らしい上品さを意識しました。"
+                  placeholder="例：上品さを意識したコーディネートです"
                   rows={5}
                   {...register("comment")}
                   style={{
