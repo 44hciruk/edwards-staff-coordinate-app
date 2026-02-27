@@ -131,43 +131,6 @@ export default function Home() {
 
         {/* Bottom section */}
         <div>
-          {/* Badge */}
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              border: `1px solid ${NAVY_BORDER}`,
-              borderRadius: "100px",
-              padding: "8px 16px",
-              marginBottom: "2rem",
-            }}
-          >
-            <span
-              style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: "0.65rem",
-                letterSpacing: "0.2em",
-                color: MUTED,
-                fontWeight: 300,
-              }}
-            >
-              EDWARD'S
-            </span>
-            <span style={{ width: "1px", height: "10px", background: NAVY_BORDER }} />
-            <span
-              style={{
-                fontFamily: "'Zen Kaku Gothic New', sans-serif",
-                fontSize: "0.65rem",
-                letterSpacing: "0.1em",
-                color: MUTED,
-                fontWeight: 300,
-              }}
-            >
-              スタッフ専用フォーム
-            </span>
-          </div>
-
           {/* CTA */}
           <Link href="/submit">
             <button

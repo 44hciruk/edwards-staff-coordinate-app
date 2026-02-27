@@ -462,11 +462,12 @@ export default function SubmitForm() {
                 style={{
                   ...inputStyle,
                   minHeight: "200px",
-                  resize: "vertical",
+                  resize: "both",
                   lineHeight: 1.8,
                   padding: "12px 14px",
+                  overflow: "auto",
                 }}
-                className="resize-y"
+                className=""
               />
               {errors.outfitDescription && (
                 <p style={{ color: "#c0392b", fontSize: "0.7rem", marginTop: "4px" }}>{errors.outfitDescription.message}</p>
@@ -485,11 +486,12 @@ export default function SubmitForm() {
                 style={{
                   ...inputStyle,
                   minHeight: "120px",
-                  resize: "vertical",
+                  resize: "both",
                   lineHeight: 1.8,
                   padding: "12px 14px",
+                  overflow: "auto",
                 }}
-                className="resize-y"
+                className=""
               />
             </div>
           </div>
@@ -514,7 +516,7 @@ export default function SubmitForm() {
             {isSubmitting ? (
               <><Loader2 style={{ width: 16, height: 16 }} className="animate-spin" /> 送信中...</>
             ) : (
-              <><Send style={{ width: 15, height: 15 }} /> 投稿する</>
+              <><Send style={{ width: 15, height: 15 }} /> 送信する</>
             )}
           </button>
 
