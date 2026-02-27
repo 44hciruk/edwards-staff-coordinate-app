@@ -4,7 +4,6 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { motion } from "framer-motion";
 
 const NAVY = "#0d1b2a";
-const NAVY_LIGHT = "#1b2d44";
 const NAVY_BORDER = "#243a52";
 const CREAM = "#f0ede8";
 const MUTED = "#8eaec4";
@@ -15,13 +14,24 @@ export default function Home() {
 
   return (
     <div
-      className="min-h-[100dvh] flex flex-col overflow-x-hidden"
-      style={{ background: NAVY, color: CREAM }}
+      style={{
+        height: "100dvh",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        background: NAVY,
+        color: CREAM,
+      }}
     >
       {/* Header */}
       <header
-        className="flex items-center justify-between"
-        style={{ padding: "20px 24px 0" }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "20px 24px 0",
+          flexShrink: 0,
+        }}
       >
         <span
           style={{
@@ -63,8 +73,14 @@ export default function Home() {
 
       {/* Hero */}
       <main
-        className="flex-1 flex flex-col justify-between"
-        style={{ padding: "40px 24px 24px" }}
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          padding: "40px 24px 24px",
+          overflow: "hidden",
+        }}
       >
         <div>
           {/* Sub label */}
@@ -84,7 +100,7 @@ export default function Home() {
             Staff Coordinate
           </motion.p>
 
-          {/* Large headline - モバイル画面幅にフィット */}
+          {/* Large headline */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -173,7 +189,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.9 }}
-          style={{ marginTop: "40px" }}
+          style={{ marginTop: "40px", flexShrink: 0 }}
         >
           <Link href="/submit">
             <button
@@ -219,6 +235,7 @@ export default function Home() {
         style={{
           padding: "16px 24px 28px",
           borderTop: `1px solid ${NAVY_BORDER}`,
+          flexShrink: 0,
         }}
       >
         <p

@@ -201,7 +201,7 @@ export default function SubmitForm() {
             lineHeight: 1.9,
             color: TEXT_MUTED, marginBottom: "36px",
           }}>
-            コーディネートの投稿を受け付けました。
+            コーディネートの入力送信を受け付けました。
             <br />
             情報はECサイトに掲載されます。
           </p>
@@ -269,13 +269,6 @@ export default function SubmitForm() {
             <span>戻る</span>
           </button>
         </Link>
-        <span style={{
-          fontFamily: "'DM Sans', sans-serif",
-          fontSize: "0.72rem", fontWeight: 400,
-          letterSpacing: "0.2em", color: NAVY,
-        }}>
-          EDWARD'S
-        </span>
         <div style={{ width: 44 }} />
       </header>
 
