@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400;500&family=Zen+Kaku+Gothic+New:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -123,17 +123,17 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Zen Kaku Gothic New', 'Noto Serif JP', sans-serif;
+    font-family: 'Zen Kaku Gothic New', 'DM Sans', sans-serif;
     font-weight: 300;
     -webkit-font-smoothing: antialiased;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.04em;
     line-height: 1.8;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Noto Serif JP', 'Cormorant Garamond', serif;
+    font-family: 'DM Sans', 'Zen Kaku Gothic New', sans-serif;
     font-weight: 300;
-    letter-spacing: 0.06em;
-    line-height: 1.5;
+    letter-spacing: 0.04em;
+    line-height: 1.4;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
