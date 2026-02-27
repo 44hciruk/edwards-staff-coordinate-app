@@ -36,17 +36,15 @@ export default function Home() {
             <div className="h-px w-12 bg-gradient-to-l from-transparent to-[oklch(0.78_0.08_75)]" />
           </div>
 
-          <h2 className="text-4xl leading-tight mb-4">
-            今日の<br />
-            <em>着こなし</em>を<br />
-            送ってください
+          <h2 className="text-3xl leading-tight mb-4" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+            EDWARD'S<br />
+            <em>スタッフスナップアプリ</em>
           </h2>
 
           <div className="h-px w-16 mx-auto my-6 bg-gradient-to-r from-transparent via-[oklch(0.78_0.08_75)] to-transparent" />
 
           <p className="text-sm text-muted-foreground leading-relaxed mb-10">
-            着用アイテムや写真を入力して送信してください。<br />
-            いただいた情報はECサイトのスタッフコーディネートに掲載されます。
+            着用アイテムや写真を入力して送信してください。いただいた情報はECサイトに掲載されます。
           </p>
 
           <Link href="/submit">
