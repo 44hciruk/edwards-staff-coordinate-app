@@ -770,9 +770,12 @@ export default function SubmitForm() {
                 <label htmlFor="outfitDescription" style={labelStyle}>
                   着用アイテム <span style={{ color: "#c0392b", fontSize: "0.75rem" }}>*</span>
                 </label>
+                <p style={{ fontSize: "0.75rem", color: "#8899aa", margin: "4px 0 8px", lineHeight: 1.6 }}>
+                  アイテム名・色・品番・サイズを記載してください
+                </p>
                 <Textarea
                   id="outfitDescription"
-                  placeholder={`例：ジャケット / チャコールグレー スーツジャケット（品番: HS-504-D）`}
+                  placeholder={`例：\nジャケット / チャコールグレー スーツジャケット（品番: HS-504-D）/ Lサイズ\nパンツ / ネイビー スラックス（品番: PT-201）/ 82cm\nシャツ / ホワイト ドレスシャツ（品番: SH-110）/ 首回り39cm`}
                   rows={8}
                   {...register("outfitDescription")}
                   style={{
