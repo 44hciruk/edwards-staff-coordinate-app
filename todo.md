@@ -108,3 +108,6 @@
 ## META情報修正（v15）
 - [x] アプリ名をEDWARD'S Staff's Buy Appに変更（title・VITE_APP_TITLE）
 - [x] meta descriptionを「EDWARD'S専用のスナップ投稿フォームです。」に変更
+
+## UI修正（v16）
+- [x] トップページ：管理ボタンをadmin以外のユーザーやログイン前でも常に表示する（/adminへのリンク）

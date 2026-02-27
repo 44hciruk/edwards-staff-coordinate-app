@@ -1,6 +1,5 @@
 import { Link } from "wouter";
 import { ArrowRight, LayoutDashboard } from "lucide-react";
-import { useAuth } from "@/_core/hooks/useAuth";
 import { motion } from "framer-motion";
 
 const NAVY = "#0d1b2a";
@@ -10,8 +9,6 @@ const MUTED = "#8eaec4";
 const WHITE = "#ffffff";
 
 export default function Home() {
-  const { user } = useAuth();
-
   return (
     <div
       style={{
@@ -44,31 +41,30 @@ export default function Home() {
         >
           EDWARD'S スタッフ専用フォーム
         </span>
-        {user?.role === "admin" && (
-          <Link href="/admin">
-            <button
-              style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: "0.6rem",
-                letterSpacing: "0.12em",
-                fontWeight: 400,
-                color: MUTED,
-                background: "transparent",
-                border: `1px solid ${NAVY_BORDER}`,
-                borderRadius: "100px",
-                padding: "8px 14px",
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-                cursor: "pointer",
-                minHeight: "36px",
-              }}
-            >
-              <LayoutDashboard style={{ width: 12, height: 12 }} />
-              管理
-            </button>
-          </Link>
-        )}
+        <Link href="/admin">
+          <button
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "0.6rem",
+              letterSpacing: "0.12em",
+              fontWeight: 400,
+              color: MUTED,
+              background: "transparent",
+              border: `1px solid ${NAVY_BORDER}`,
+              borderRadius: "100px",
+              padding: "8px 14px",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              cursor: "pointer",
+              minHeight: "36px",
+              WebkitTapHighlightColor: "transparent",
+            }}
+          >
+            <LayoutDashboard style={{ width: 12, height: 12 }} />
+            管理
+          </button>
+        </Link>
       </header>
 
       {/* Hero */}
