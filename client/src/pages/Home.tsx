@@ -21,12 +21,14 @@ export default function Home() {
           .h-header-title { font-size: 1.1rem !important; }
           .h-admin-btn { font-size: 0.72rem !important; padding: 8px 18px !important; min-height: 38px !important; }
           .h-admin-icon { width: 13px !important; height: 13px !important; }
-          .h-main { padding: 16px 56px 14px !important; justify-content: space-between !important; }
-          .h-top-section { flex: 1 !important; display: flex !important; flex-direction: column !important; justify-content: flex-start !important; }
+          .h-main { padding: 16px 56px 14px !important; justify-content: flex-start !important; }
+          .h-top-section { flex-shrink: 0 !important; }
           .h-sublabel { font-size: 1rem !important; margin-bottom: 10px !important; letter-spacing: 0.3em !important; }
-          .h-logo-svg { width: calc(80vw - 112px) !important; max-width: none !important; margin-bottom: 2px !important; }
-          .h-h1 { font-size: min(20vw, 26dvh) !important; line-height: 0.88 !important; }
+          .h-logo-svg { width: calc(90vw - 112px) !important; max-width: none !important; margin-bottom: 4px !important; }
+          .h-h1 { font-size: min(13vw, 16dvh) !important; line-height: 0.88 !important; display: inline !important; }
+          .h-h1-wrapper { display: block !important; white-space: nowrap !important; margin: 2px 0 !important; }
           .h-divider { margin-top: 0 !important; margin-bottom: 14px !important; }
+          .h-bottom-section { margin-top: auto !important; }
           .h-bottom { flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 32px !important; margin-top: 0 !important; }
           .h-desc { font-size: 1.05rem !important; white-space: nowrap !important; }
           .h-cta-btn { font-size: 0.92rem !important; min-height: 52px !important; padding: 0 28px !important; }
@@ -153,39 +155,28 @@ export default function Home() {
                 <path fill={CREAM} d="M1069.98,25.45c0,3.46-.81,14.65-4.35,24.26-4.84,13.36-14.37,28.87-19.49,29.15-3.96.21,7.49-30.15,2.88-31.78-10.54-3.63-17.18-7.97-17.21-21.81-.02-10.76,9.14-19.92,19.18-19.94,9.98-.02,18.97,9.31,19,20.11Z"/>
                 <path fill={CREAM} d="M1144.78,85.12c-33.61-23.22-33.36-39.97-33.37-45.3-.01-6.77,4.57-26.76,21.38-26.8,28.43-.06,39.96,53.29,48.59,53.27,2.67,0,4.62-2.43,4.4-4.94l-4.24-50.53c-.21-2.49-2.53-4.39-5.2-4.16-5.16.01-5.09,6.35-10.71,6.36-5.63.01-11.33-8.82-29.37-8.78-48.65.1-54.5,41.98-54.48,52.74.02,6.68,1.02,24.39,13.07,37.22,12.03,12.82,26.83,22.74,42.09,32.73,15.23,9.99,30.9,26.05,30.95,45.71.04,19.68-10.18,31.59-25.35,31.62-15.16.04-25.42-7.98-35.21-28.17-6.05-12.65-13.01-31.41-17.88-31.51-2.49-.09-4.48,2.49-4.38,5.35l1.74,58.37c.09,2.89,2.21,5.19,4.72,5.13,2.52-.07,4.45-2.49,4.36-5.39,0,0,2.65-8.43,12.26-1.82,3.88,2.67,7.45,8.64,33.9,8.58,27.16-.06,58.02-21.09,57.95-53.62-.07-32.51-15.52-48.57-55.22-76.05Z"/>
               </svg>
-              <h1
-                className="h-h1"
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontWeight: 300,
-                  lineHeight: 0.9,
-                  letterSpacing: "-0.02em",
-                  color: "transparent",
-                  WebkitTextStroke: `1px ${CREAM}`,
-                  margin: "2px 0",
-                }}
-              >
-                STUFF'S
-              </h1>
-              <h1
-                className="h-h1"
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontWeight: 300,
-                  lineHeight: 0.9,
-                  letterSpacing: "-0.02em",
-                  color: "transparent",
-                  WebkitTextStroke: `1px ${CREAM}`,
-                  margin: 0,
-                }}
-              >
-                BUY APP
-              </h1>
+              <div className="h-h1-wrapper">
+                <h1
+                  className="h-h1"
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontWeight: 300,
+                    lineHeight: 0.9,
+                    letterSpacing: "-0.02em",
+                    color: "transparent",
+                    WebkitTextStroke: `1px ${CREAM}`,
+                    margin: 0,
+                    fontSize: "min(18vw, 5rem)",
+                  }}
+                >
+                  STUFF'S BUY APP
+                </h1>
+              </div>
             </motion.div>
           </div>
 
           {/* Bottom section */}
-          <div style={{ flexShrink: 0 }}>
+          <div className="h-bottom-section" style={{ flexShrink: 0 }}>
             {/* Divider */}
             <motion.div
               className="h-divider"
