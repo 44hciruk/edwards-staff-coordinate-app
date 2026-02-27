@@ -194,7 +194,7 @@ export default function AdminDashboard() {
         </div>
       </header>
 
-      <div className="px-4 py-5">
+      <div className="px-4 py-5" style={{ maxWidth: "720px", margin: "0 auto" }}>
         {/* ── タイトル ── */}
         <div className="mb-4">
           <h2 className="text-xl font-medium mb-0.5">受信一覧</h2>

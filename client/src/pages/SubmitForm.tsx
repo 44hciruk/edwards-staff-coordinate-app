@@ -178,7 +178,7 @@ export default function SubmitForm() {
     return (
       <div
         className="flex flex-col items-center justify-center px-6"
-        style={{ background: BG, color: TEXT, minHeight: "100dvh" }}
+        style={{ background: BG, color: TEXT, minHeight: "100dvh", maxWidth: "560px", margin: "0 auto" }}
       >
         <div className="text-center w-full" style={{ maxWidth: "360px" }}>
           <div style={{
@@ -212,7 +212,7 @@ export default function SubmitForm() {
               style={{
                 width: "100%", minHeight: "56px",
                 background: NAVY, color: CREAM,
-                border: "none", borderRadius: "12px",
+                border: "none", borderRadius: "100px",
                 fontFamily: "'Zen Kaku Gothic New', sans-serif",
                 fontSize: "0.92rem", fontWeight: 500,
                 letterSpacing: "0.06em", cursor: "pointer",
@@ -221,13 +221,13 @@ export default function SubmitForm() {
               onTouchStart={(e) => { e.currentTarget.style.transform = "scale(0.98)"; e.currentTarget.style.opacity = "0.9"; }}
               onTouchEnd={(e) => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.opacity = "1"; }}
             >
-              続けて投稿する
+              続けて送信する
             </button>
             <Link href="/">
               <button style={{
                 width: "100%", minHeight: "56px",
                 background: "transparent", color: TEXT_MUTED,
-                border: `1px solid ${NAVY_BORDER}`, borderRadius: "12px",
+                border: `1px solid ${NAVY_BORDER}`, borderRadius: "100px",
                 fontFamily: "'Zen Kaku Gothic New', sans-serif",
                 fontSize: "0.92rem", fontWeight: 500,
                 letterSpacing: "0.06em", cursor: "pointer",
@@ -272,7 +272,7 @@ export default function SubmitForm() {
         <div style={{ width: 44 }} />
       </header>
 
-      <div style={{ maxWidth: "480px", margin: "0 auto", padding: "28px 20px 48px" }}>
+      <div style={{ maxWidth: "560px", margin: "0 auto", padding: "28px 20px 48px" }}>
         {/* ── ページタイトル ── */}
         <div style={{ marginBottom: "28px" }}>
           <p style={sectionTitleStyle}>Coordinate Post</p>
@@ -569,9 +569,9 @@ export default function SubmitForm() {
               background: isSubmitting || uploading ? "#e0e8f0" : NAVY,
               color: isSubmitting || uploading ? TEXT_MUTED : CREAM,
               border: "none",
-              borderRadius: "12px",
-              fontFamily: "'Zen Kaku Gothic New', sans-serif",
-              fontSize: "0.95rem",
+              borderRadius: "100px",
+                fontFamily: "'Zen Kaku Gothic New', sans-serif",
+                fontSize: "0.95rem",
               fontWeight: 500,
               letterSpacing: "0.08em",
               display: "flex",
