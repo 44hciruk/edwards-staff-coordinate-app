@@ -8,7 +8,6 @@ const NAVY_LIGHT = "#1a2e42";
 const NAVY_BORDER = "#243a52";
 const CREAM = "#f0ede8";
 const MUTED = "#7a9ab5";
-const MUTED_DARK = "#4a6a85";
 
 export default function Home() {
   const { user } = useAuth();
@@ -85,7 +84,21 @@ export default function Home() {
               marginBottom: "0.2rem",
             }}
           >
-            STAFF
+            STAFF'S
+          </h1>
+          <h1
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "clamp(3.5rem, 15vw, 7rem)",
+              fontWeight: 300,
+              lineHeight: 0.9,
+              letterSpacing: "-0.03em",
+              color: "transparent",
+              WebkitTextStroke: `1px ${CREAM}`,
+              marginBottom: "0.2rem",
+            }}
+          >
+            BUY
           </h1>
           <h1
             style={{
@@ -99,7 +112,7 @@ export default function Home() {
               marginBottom: "2.5rem",
             }}
           >
-            SNAP
+            APP
           </h1>
 
           {/* Divider */}
@@ -116,20 +129,20 @@ export default function Home() {
           <p
             style={{
               fontFamily: "'Zen Kaku Gothic New', sans-serif",
-              fontSize: "0.68rem",
+              fontSize: "0.72rem",
               fontWeight: 300,
               letterSpacing: "0.06em",
-              lineHeight: 1.6,
+              lineHeight: 1.8,
               color: MUTED,
-              whiteSpace: "nowrap",
             }}
           >
-            着用アイテムや写真を入力して送信してください。情報はECサイトに掃載されます。
+            着用アイテムや写真を入力して送信してください。<br />
+            情報はECサイトに掲載されます。
           </p>
         </div>
 
         {/* Bottom section */}
-        <div>
+        <div style={{ marginTop: "3rem" }}>
           {/* CTA */}
           <Link href="/submit">
             <button
@@ -154,7 +167,7 @@ export default function Home() {
               onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
               onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
             >
-              <span>フォームへ進む</span>
+              <span>入力フォームへ進む</span>
               <ArrowUpRight style={{ width: 18, height: 18 }} />
             </button>
           </Link>
@@ -172,11 +185,11 @@ export default function Home() {
               fontFamily: "'DM Sans', sans-serif",
               fontSize: "0.65rem",
               letterSpacing: "0.2em",
-              color: NAVY_BORDER,
+              color: "#ffffff",
               fontWeight: 300,
             }}
           >
-            © EDWARD'S Staff Snap App
+            © EDWARD'S Staff's Buy App
           </span>
         </div>
         <span
@@ -184,7 +197,7 @@ export default function Home() {
             fontFamily: "'DM Sans', sans-serif",
             fontSize: "0.55rem",
             letterSpacing: "0.12em",
-            color: MUTED_DARK,
+            color: "#ffffff",
           }}
         >
           Designed &amp; Developed by Shigesato Kurita
