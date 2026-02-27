@@ -27,8 +27,10 @@ export default function Home() {
           .h-h1 { font-size: min(20vw, 26dvh) !important; line-height: 0.88 !important; }
           .h-divider { margin-top: 16px !important; margin-bottom: 14px !important; }
           .h-bottom { flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 32px !important; }
-          .h-desc { font-size: 0.88rem !important; }
+          .h-desc { font-size: 1.05rem !important; white-space: nowrap !important; }
           .h-cta-btn { font-size: 0.92rem !important; min-height: 52px !important; padding: 0 28px !important; }
+          .h-admin-btn { font-size: 0.88rem !important; padding: 0 28px !important; min-height: 52px !important; border-radius: 100px !important; }
+          .h-admin-icon { width: 16px !important; height: 16px !important; }
           .h-footer { padding: 10px 56px 14px !important; text-align: left !important; }
           .h-footer-copy { font-size: 0.68rem !important; }
           .h-footer-credit { font-size: 0.58rem !important; }
@@ -223,9 +225,7 @@ export default function Home() {
                   margin: 0,
                 }}
               >
-                着用アイテムや写真を入力して送信してください。
-                <br />
-                情報はECサイトに掲載されます。
+                着用アイテムや写真を入力して送信してください。情報はECサイトに掲載されます。
               </p>
 
               <motion.div
