@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 
@@ -6,24 +6,34 @@ import type { TrpcContext } from "./_core/context";
 vi.mock("./db", () => ({
   createPost: vi.fn().mockResolvedValue(1),
   addPhotosToPost: vi.fn().mockResolvedValue(undefined),
-  getAllPosts: vi.fn().mockResolvedValue([]),
+  getAllPosts: vi.fn().mockResolvedValue([
+    {
+      id: 1,
+      staffName: "山田花子",
+      storeName: "EDWARD'S 新宿高島屋店",
+      age: 28,
+      height: 165,
+      weight: 52,
+      outfitDescription: "ホワイトブラウス + ネイビースカート",
+      comment: "上品さを意識しました",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+  ]),
   getPostById: vi.fn().mockResolvedValue({
     id: 1,
     staffName: "山田花子",
-    storeName: "東京伊勢丹新宿店",
+    storeName: "EDWARD'S 新宿高島屋店",
     age: 28,
     height: 165,
     weight: 52,
     outfitDescription: "ホワイトブラウス + ネイビースカート",
     comment: "上品さを意識しました",
-    status: "pending",
-    adminNote: null,
     createdAt: new Date(),
     updatedAt: new Date(),
   }),
   getPhotosByPostId: vi.fn().mockResolvedValue([]),
   getPhotosForPosts: vi.fn().mockResolvedValue([]),
-  updatePostStatus: vi.fn().mockResolvedValue(undefined),
   deletePost: vi.fn().mockResolvedValue(undefined),
 }));
 
@@ -76,12 +86,12 @@ function createUserContext(): TrpcContext {
   };
 }
 
-describe("posts.create", () => {
+describe("posts.create（ログイン不要）", () => {
   it("スタッフが投稿を作成できる", async () => {
     const caller = appRouter.createCaller(createPublicContext());
     const result = await caller.posts.create({
       staffName: "山田花子",
-      storeName: "東京伊勢丹新宿店",
+      storeName: "EDWARD'S 新宿高島屋店",
       age: 28,
       height: 165,
       weight: 52,
@@ -97,58 +107,58 @@ describe("posts.create", () => {
     await expect(
       caller.posts.create({
         staffName: "",
-        storeName: "東京伊勢丹新宿店",
+        storeName: "EDWARD'S 新宿高島屋店",
         outfitDescription: "テスト",
         photoKeys: [],
       })
     ).rejects.toThrow();
   });
+
+  it("写真なしでも投稿できる", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const result = await caller.posts.create({
+      staffName: "田中太郎",
+      storeName: "EDWARD'S 本社",
+      outfitDescription: "スーツスタイル",
+      photoKeys: [],
+    });
+    expect(result).toEqual({ postId: 1 });
+  });
 });
 
-describe("posts.list (admin only)", () => {
+describe("posts.list（管理者専用）", () => {
   it("管理者は投稿一覧を取得できる", async () => {
     const caller = appRouter.createCaller(createAdminContext());
-    const result = await caller.posts.list({ status: "all" });
+    const result = await caller.posts.list();
     expect(Array.isArray(result)).toBe(true);
+    expect(result.length).toBeGreaterThan(0);
   });
 
   it("一般ユーザーはアクセスできない", async () => {
     const caller = appRouter.createCaller(createUserContext());
-    await expect(caller.posts.list({ status: "all" })).rejects.toThrow("管理者権限が必要です");
+    await expect(caller.posts.list()).rejects.toThrow("管理者権限が必要です");
   });
 
   it("未認証ユーザーはアクセスできない", async () => {
     const caller = appRouter.createCaller(createPublicContext());
-    await expect(caller.posts.list({ status: "all" })).rejects.toThrow();
+    await expect(caller.posts.list()).rejects.toThrow();
   });
 });
 
-describe("posts.updateStatus (admin only)", () => {
-  it("管理者は投稿を承認できる", async () => {
+describe("posts.exportCsv（管理者専用）", () => {
+  it("管理者はCSVエクスポート用データを取得できる", async () => {
     const caller = appRouter.createCaller(createAdminContext());
-    const result = await caller.posts.updateStatus({ id: 1, status: "approved" });
-    expect(result).toEqual({ success: true });
+    const result = await caller.posts.exportCsv();
+    expect(Array.isArray(result)).toBe(true);
   });
 
-  it("管理者は投稿を非承認にできる", async () => {
-    const caller = appRouter.createCaller(createAdminContext());
-    const result = await caller.posts.updateStatus({
-      id: 1,
-      status: "rejected",
-      adminNote: "写真の品質が基準を満たしていません",
-    });
-    expect(result).toEqual({ success: true });
-  });
-
-  it("一般ユーザーはステータス変更できない", async () => {
+  it("一般ユーザーはCSVエクスポートできない", async () => {
     const caller = appRouter.createCaller(createUserContext());
-    await expect(
-      caller.posts.updateStatus({ id: 1, status: "approved" })
-    ).rejects.toThrow("管理者権限が必要です");
+    await expect(caller.posts.exportCsv()).rejects.toThrow("管理者権限が必要です");
   });
 });
 
-describe("posts.delete (admin only)", () => {
+describe("posts.delete（管理者専用）", () => {
   it("管理者は投稿を削除できる", async () => {
     const caller = appRouter.createCaller(createAdminContext());
     const result = await caller.posts.delete({ id: 1 });

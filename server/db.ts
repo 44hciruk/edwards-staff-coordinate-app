@@ -1,7 +1,6 @@
-import { and, desc, eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
-  CoordinatePost,
   InsertCoordinatePost,
   InsertPostPhoto,
   InsertUser,
@@ -72,17 +71,13 @@ export async function createPost(data: InsertCoordinatePost): Promise<number> {
   return (result[0] as { insertId: number }).insertId;
 }
 
-export async function getAllPosts(status?: CoordinatePost["status"]) {
+export async function getAllPosts() {
   const db = await getDb();
   if (!db) return [];
-  const query = db
+  return db
     .select()
     .from(coordinatePosts)
     .orderBy(desc(coordinatePosts.createdAt));
-  if (status) {
-    return query.where(eq(coordinatePosts.status, status));
-  }
-  return query;
 }
 
 export async function getPostById(id: number) {
@@ -90,19 +85,6 @@ export async function getPostById(id: number) {
   if (!db) return undefined;
   const result = await db.select().from(coordinatePosts).where(eq(coordinatePosts.id, id)).limit(1);
   return result.length > 0 ? result[0] : undefined;
-}
-
-export async function updatePostStatus(
-  id: number,
-  status: CoordinatePost["status"],
-  adminNote?: string
-) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  await db
-    .update(coordinatePosts)
-    .set({ status, adminNote: adminNote ?? null })
-    .where(eq(coordinatePosts.id, id));
 }
 
 export async function deletePost(id: number) {
@@ -135,7 +117,6 @@ export async function getPhotosForPosts(postIds: number[]): Promise<PostPhoto[]>
   if (postIds.length === 0) return [];
   const db = await getDb();
   if (!db) return [];
-  // fetch all photos for given post IDs
   const results: PostPhoto[] = [];
   for (const id of postIds) {
     const photos = await db

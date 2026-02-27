@@ -2,25 +2,15 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import {
-  CheckCircle, XCircle, Clock, Trash2, ChevronLeft, ChevronRight,
-  User, MapPin, Ruler, Weight, Shirt, MessageSquare, Loader2, LogIn
+  Trash2, ChevronLeft, ChevronRight,
+  User, Ruler, Weight, Shirt, MessageSquare, Loader2, LogIn,
+  Download, Calendar, MapPin, XCircle
 } from "lucide-react";
 import { Link } from "wouter";
 import { getLoginUrl } from "@/const";
-
-type StatusFilter = "all" | "pending" | "approved" | "rejected";
-
-const STATUS_LABELS: Record<string, { label: string; className: string; icon: React.ReactNode }> = {
-  pending: { label: "審査中", className: "status-pending", icon: <Clock className="w-3 h-3" /> },
-  approved: { label: "承認済", className: "status-approved", icon: <CheckCircle className="w-3 h-3" /> },
-  rejected: { label: "非承認", className: "status-rejected", icon: <XCircle className="w-3 h-3" /> },
-};
 
 type Post = {
   id: number;
@@ -31,56 +21,115 @@ type Post = {
   weight: number | null;
   outfitDescription: string;
   comment: string | null;
-  status: "pending" | "approved" | "rejected";
-  adminNote: string | null;
   createdAt: Date;
   updatedAt: Date;
   photos: { id: number; postId: number; url: string; fileKey: string; sortOrder: number; createdAt: Date }[];
 };
 
+// CSV生成ユーティリティ
+function generateCsv(posts: Post[]): string {
+  const headers = [
+    "ID", "受信日時", "名前", "所属店舗", "年齢", "身長(cm)", "体重(kg)",
+    "着用服", "コメント",
+    "写真1", "写真2", "写真3", "写真4", "写真5",
+    "写真6", "写真7", "写真8", "写真9", "写真10",
+  ];
+
+  const escape = (v: string | number | null | undefined) => {
+    if (v === null || v === undefined) return "";
+    const s = String(v);
+    if (s.includes(",") || s.includes('"') || s.includes("\n")) {
+      return `"${s.replace(/"/g, '""')}"`;
+    }
+    return s;
+  };
+
+  const rows = posts.map((p) => {
+    const photoUrls = Array.from({ length: 10 }, (_, i) => p.photos[i]?.url ?? "");
+    return [
+      p.id,
+      new Date(p.createdAt).toLocaleString("ja-JP"),
+      p.staffName,
+      p.storeName,
+      p.age ?? "",
+      p.height ?? "",
+      p.weight ?? "",
+      p.outfitDescription,
+      p.comment ?? "",
+      ...photoUrls,
+    ].map(escape).join(",");
+  });
+
+  // BOM付きUTF-8でExcelが文字化けしないようにする
+  return "\uFEFF" + [headers.join(","), ...rows].join("\n");
+}
+
+function downloadCsv(content: string, filename: string) {
+  const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 export default function AdminDashboard() {
   const { user, loading, isAuthenticated } = useAuth();
-  const [filter, setFilter] = useState<StatusFilter>("all");
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-  const [adminNote, setAdminNote] = useState("");
   const [photoIndex, setPhotoIndex] = useState(0);
   const [confirmDelete, setConfirmDelete] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const utils = trpc.useUtils();
 
-  const { data: posts, isLoading } = trpc.posts.list.useQuery(
-    { status: filter },
-    { enabled: isAuthenticated && user?.role === "admin" }
-  );
+  const { data: posts, isLoading } = trpc.posts.list.useQuery(undefined, {
+    enabled: isAuthenticated && user?.role === "admin",
+  });
 
-  const updateStatus = trpc.posts.updateStatus.useMutation({
-    onSuccess: () => {
-      utils.posts.list.invalidate();
-      toast.success("ステータスを更新しました");
-      setSelectedPost(null);
-    },
-    onError: (err) => toast.error(err.message),
+  const { data: exportData } = trpc.posts.exportCsv.useQuery(undefined, {
+    enabled: isAuthenticated && user?.role === "admin",
   });
 
   const deletePost = trpc.posts.delete.useMutation({
     onSuccess: () => {
       utils.posts.list.invalidate();
+      utils.posts.exportCsv.invalidate();
       toast.success("投稿を削除しました");
       setConfirmDelete(null);
       setSelectedPost(null);
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err: unknown) => toast.error(err instanceof Error ? err.message : "削除に失敗しました"),
   });
 
-  const handleStatusUpdate = (id: number, status: "pending" | "approved" | "rejected") => {
-    updateStatus.mutate({ id, status, adminNote: adminNote || undefined });
+  const handleExportCsv = () => {
+    if (!exportData || exportData.length === 0) {
+      toast.error("エクスポートするデータがありません");
+      return;
+    }
+    const date = new Date().toISOString().slice(0, 10);
+    const csv = generateCsv(exportData as Post[]);
+    downloadCsv(csv, `coordinate_posts_${date}.csv`);
+    toast.success(`${exportData.length}件をCSVでエクスポートしました`);
   };
 
   const openDetail = (post: Post) => {
     setSelectedPost(post);
-    setAdminNote(post.adminNote || "");
     setPhotoIndex(0);
   };
+
+  // フィルタリング
+  const filteredPosts = posts
+    ? (posts as Post[]).filter((p) => {
+        if (!searchQuery) return true;
+        const q = searchQuery.toLowerCase();
+        return (
+          p.staffName.toLowerCase().includes(q) ||
+          p.storeName.toLowerCase().includes(q) ||
+          p.outfitDescription.toLowerCase().includes(q)
+        );
+      })
+    : [];
 
   // Auth check
   if (loading) {
@@ -96,7 +145,7 @@ export default function AdminDashboard() {
       <div className="min-h-screen flex flex-col items-center justify-center px-6 gap-6">
         <h2 className="text-2xl">管理者ログイン</h2>
         <p className="text-sm text-muted-foreground text-center">
-          管理者ダッシュボードにアクセスするにはログインが必要です
+          管理画面にアクセスするにはログインが必要です
         </p>
         <a href={getLoginUrl()}>
           <Button className="gap-2">
@@ -121,52 +170,51 @@ export default function AdminDashboard() {
     );
   }
 
-  const pendingCount = posts?.filter((p) => p.status === "pending").length ?? 0;
-
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border">
-        <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Link href="/">
               <span className="text-xs text-muted-foreground tracking-widest uppercase">← Back</span>
             </Link>
             <span className="text-border">|</span>
-            <h1 className="text-sm font-medium tracking-widest uppercase">Admin Dashboard</h1>
+            <h1 className="text-sm font-medium tracking-widest uppercase">Admin</h1>
           </div>
-          {pendingCount > 0 && (
-            <Badge className="bg-amber-100 text-amber-700 border-amber-200 text-xs">
-              審査待ち {pendingCount}件
-            </Badge>
-          )}
+          <Button
+            onClick={handleExportCsv}
+            variant="outline"
+            size="sm"
+            className="gap-1.5 text-xs"
+            disabled={!exportData || exportData.length === 0}
+          >
+            <Download className="w-3.5 h-3.5" />
+            CSV出力
+          </Button>
         </div>
       </header>
 
       <div className="max-w-5xl mx-auto px-4 py-8">
-        {/* Title */}
-        <div className="mb-8">
-          <h2 className="text-3xl mb-1">投稿管理</h2>
-          <p className="text-xs text-muted-foreground tracking-wide">
-            {posts?.length ?? 0}件の投稿
-          </p>
+        {/* Title & Stats */}
+        <div className="flex items-end justify-between mb-6">
+          <div>
+            <h2 className="text-3xl mb-1">受信一覧</h2>
+            <p className="text-xs text-muted-foreground">
+              {posts?.length ?? 0}件の投稿
+            </p>
+          </div>
         </div>
 
-        {/* Filter Tabs */}
-        <div className="flex gap-1 mb-6 bg-muted rounded-lg p-1 w-fit">
-          {(["all", "pending", "approved", "rejected"] as StatusFilter[]).map((s) => (
-            <button
-              key={s}
-              onClick={() => setFilter(s)}
-              className={`px-3 py-1.5 text-xs rounded-md transition-all ${
-                filter === s
-                  ? "bg-background text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {s === "all" ? "すべて" : STATUS_LABELS[s].label}
-            </button>
-          ))}
+        {/* Search */}
+        <div className="mb-6">
+          <input
+            type="text"
+            placeholder="名前・店舗・着用服で検索..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+          />
         </div>
 
         {/* Posts Grid */}
@@ -174,19 +222,21 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-center py-20">
             <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
           </div>
-        ) : !posts || posts.length === 0 ? (
+        ) : filteredPosts.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-muted-foreground text-sm">投稿がありません</p>
+            <Shirt className="w-10 h-10 mx-auto mb-3 text-muted-foreground/30" strokeWidth={1} />
+            <p className="text-muted-foreground text-sm">
+              {searchQuery ? "検索結果がありません" : "まだ投稿がありません"}
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {posts.map((post) => {
-              const statusInfo = STATUS_LABELS[post.status];
+            {filteredPosts.map((post) => {
               const mainPhoto = post.photos[0];
               return (
                 <div
                   key={post.id}
-                  onClick={() => openDetail(post as Post)}
+                  onClick={() => openDetail(post)}
                   className="bg-card border border-border rounded-lg overflow-hidden cursor-pointer hover:shadow-md transition-all group"
                 >
                   {/* Photo */}
@@ -206,27 +256,27 @@ export default function AdminDashboard() {
 
                   {/* Info */}
                   <div className="p-3">
-                    <div className="flex items-start justify-between gap-2 mb-2">
+                    <div className="flex items-start justify-between gap-2 mb-1.5">
                       <div>
                         <p className="font-medium text-sm">{post.staffName}</p>
-                        <p className="text-xs text-muted-foreground">{post.storeName}</p>
+                        <p className="text-xs text-muted-foreground flex items-center gap-1">
+                          <MapPin className="w-3 h-3" />
+                          {post.storeName}
+                        </p>
                       </div>
-                      <span className={`inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full ${statusInfo.className}`}>
-                        {statusInfo.icon}
-                        {statusInfo.label}
-                      </span>
-                    </div>
-                    <p className="text-xs text-muted-foreground line-clamp-2">{post.outfitDescription}</p>
-                    <div className="flex items-center justify-between mt-2">
-                      <p className="text-[10px] text-muted-foreground">
-                        {new Date(post.createdAt).toLocaleDateString("ja-JP")}
-                      </p>
                       {post.photos.length > 1 && (
-                        <span className="text-[10px] text-muted-foreground">
-                          +{post.photos.length - 1}枚
+                        <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
+                          {post.photos.length}枚
                         </span>
                       )}
                     </div>
+                    <p className="text-xs text-muted-foreground line-clamp-2 mb-2">
+                      {post.outfitDescription}
+                    </p>
+                    <p className="text-[10px] text-muted-foreground flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />
+                      {new Date(post.createdAt).toLocaleDateString("ja-JP")}
+                    </p>
                   </div>
                 </div>
               );
@@ -277,42 +327,44 @@ export default function AdminDashboard() {
                       </div>
                     </>
                   )}
-                  {/* Status Badge */}
-                  <div className="absolute top-3 right-3">
-                    <span className={`inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full ${STATUS_LABELS[selectedPost.status].className}`}>
-                      {STATUS_LABELS[selectedPost.status].icon}
-                      {STATUS_LABELS[selectedPost.status].label}
-                    </span>
-                  </div>
+                  {/* Photo count */}
+                  {selectedPost.photos.length > 1 && (
+                    <div className="absolute top-3 right-3 bg-black/50 text-white text-xs px-2 py-0.5 rounded-full">
+                      {photoIndex + 1} / {selectedPost.photos.length}
+                    </div>
+                  )}
                 </div>
               )}
 
               <div className="p-6">
-                <DialogHeader className="mb-4">
+                <DialogHeader className="mb-1">
                   <DialogTitle className="text-2xl">{selectedPost.staffName}</DialogTitle>
-                  <p className="text-sm text-muted-foreground">{selectedPost.storeName}</p>
                 </DialogHeader>
+                <p className="text-sm text-muted-foreground flex items-center gap-1 mb-4">
+                  <MapPin className="w-3.5 h-3.5" />
+                  {selectedPost.storeName}
+                </p>
 
                 {/* Staff Info */}
-                <div className="grid grid-cols-3 gap-3 mb-5">
+                <div className="flex gap-3 mb-5 flex-wrap">
                   {selectedPost.age && (
-                    <div className="bg-muted rounded-lg p-3 text-center">
+                    <div className="bg-muted rounded-lg px-4 py-2.5 text-center">
                       <User className="w-4 h-4 mx-auto mb-1 text-muted-foreground" strokeWidth={1.5} />
-                      <p className="text-xs text-muted-foreground">年齢</p>
+                      <p className="text-[10px] text-muted-foreground">年齢</p>
                       <p className="text-sm font-medium">{selectedPost.age}歳</p>
                     </div>
                   )}
                   {selectedPost.height && (
-                    <div className="bg-muted rounded-lg p-3 text-center">
+                    <div className="bg-muted rounded-lg px-4 py-2.5 text-center">
                       <Ruler className="w-4 h-4 mx-auto mb-1 text-muted-foreground" strokeWidth={1.5} />
-                      <p className="text-xs text-muted-foreground">身長</p>
+                      <p className="text-[10px] text-muted-foreground">身長</p>
                       <p className="text-sm font-medium">{selectedPost.height}cm</p>
                     </div>
                   )}
                   {selectedPost.weight && (
-                    <div className="bg-muted rounded-lg p-3 text-center">
+                    <div className="bg-muted rounded-lg px-4 py-2.5 text-center">
                       <Weight className="w-4 h-4 mx-auto mb-1 text-muted-foreground" strokeWidth={1.5} />
-                      <p className="text-xs text-muted-foreground">体重</p>
+                      <p className="text-[10px] text-muted-foreground">体重</p>
                       <p className="text-sm font-medium">{selectedPost.weight}kg</p>
                     </div>
                   )}
@@ -335,63 +387,47 @@ export default function AdminDashboard() {
                       <MessageSquare className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
                       <h4 className="text-xs tracking-widest uppercase text-muted-foreground">コメント</h4>
                     </div>
-                    <p className="text-sm leading-relaxed italic text-muted-foreground">
+                    <p className="text-sm leading-relaxed italic text-muted-foreground bg-muted rounded-lg p-3">
                       "{selectedPost.comment}"
                     </p>
                   </div>
                 )}
 
-                <div className="h-px w-full bg-border mb-5" />
+                {/* Photo URLs for download */}
+                {selectedPost.photos.length > 0 && (
+                  <div className="mb-5">
+                    <h4 className="text-xs tracking-widest uppercase text-muted-foreground mb-2">写真ダウンロード</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedPost.photos.map((photo, i) => (
+                        <a
+                          key={photo.id}
+                          href={photo.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs px-2.5 py-1 border border-border rounded hover:bg-muted transition-colors"
+                        >
+                          写真{i + 1}を開く
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
-                {/* Admin Note */}
-                <div className="mb-5">
-                  <Label className="text-xs tracking-widest uppercase mb-2 block">管理者メモ（任意）</Label>
-                  <Textarea
-                    value={adminNote}
-                    onChange={(e) => setAdminNote(e.target.value)}
-                    placeholder="承認・非承認の理由など"
-                    rows={2}
-                    className="resize-none text-sm"
-                  />
-                </div>
+                <div className="h-px w-full bg-border mb-4" />
 
-                {/* Action Buttons */}
-                <div className="flex gap-2">
-                  <Button
-                    onClick={() => handleStatusUpdate(selectedPost.id, "approved")}
-                    disabled={updateStatus.isPending || selectedPost.status === "approved"}
-                    className="flex-1 gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white"
-                  >
-                    {updateStatus.isPending ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <CheckCircle className="w-4 h-4" />
-                    )}
-                    承認
-                  </Button>
-                  <Button
-                    onClick={() => handleStatusUpdate(selectedPost.id, "rejected")}
-                    disabled={updateStatus.isPending || selectedPost.status === "rejected"}
-                    variant="outline"
-                    className="flex-1 gap-1.5 border-red-200 text-red-600 hover:bg-red-50"
-                  >
-                    <XCircle className="w-4 h-4" />
-                    非承認
-                  </Button>
-                  <Button
-                    onClick={() => handleStatusUpdate(selectedPost.id, "pending")}
-                    disabled={updateStatus.isPending || selectedPost.status === "pending"}
-                    variant="outline"
-                    className="gap-1.5"
-                  >
-                    <Clock className="w-4 h-4" />
-                  </Button>
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Calendar className="w-3.5 h-3.5" />
+                    受信：{new Date(selectedPost.createdAt).toLocaleString("ja-JP")}
+                  </p>
                   <Button
                     onClick={() => setConfirmDelete(selectedPost.id)}
                     variant="outline"
+                    size="sm"
                     className="gap-1.5 text-destructive border-destructive/30 hover:bg-destructive/5"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-3.5 h-3.5" />
+                    削除
                   </Button>
                 </div>
               </div>
@@ -408,11 +444,7 @@ export default function AdminDashboard() {
           </DialogHeader>
           <p className="text-sm text-muted-foreground">この操作は取り消せません。写真も含めて削除されます。</p>
           <div className="flex gap-2 mt-2">
-            <Button
-              variant="outline"
-              className="flex-1"
-              onClick={() => setConfirmDelete(null)}
-            >
+            <Button variant="outline" className="flex-1" onClick={() => setConfirmDelete(null)}>
               キャンセル
             </Button>
             <Button

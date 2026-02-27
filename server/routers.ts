@@ -12,7 +12,6 @@ import {
   getPhotosByPostId,
   getPhotosForPosts,
   getPostById,
-  updatePostStatus,
 } from "./db";
 import { z } from "zod";
 
@@ -37,7 +36,7 @@ export const appRouter = router({
 
   // ---- 投稿関連 ----
   posts: router({
-    // スタッフが投稿を作成（公開エンドポイント）
+    // スタッフが投稿を作成（公開エンドポイント・ログイン不要）
     create: publicProcedure
       .input(
         z.object({
@@ -62,7 +61,6 @@ export const appRouter = router({
           weight: input.weight,
           outfitDescription: input.outfitDescription,
           comment: input.comment,
-          status: "pending",
         });
 
         if (input.photoKeys.length > 0) {
@@ -78,7 +76,7 @@ export const appRouter = router({
 
         // オーナーに通知
         await notifyOwner({
-          title: "新しいコーディネート投稿",
+          title: `新しいコーディネート投稿：${input.staffName}`,
           content: `${input.staffName}（${input.storeName}）から新しいコーディネート投稿がありました。`,
         }).catch(() => {});
 
@@ -87,19 +85,11 @@ export const appRouter = router({
 
     // 管理者: 全投稿一覧
     list: adminProcedure
-      .input(
-        z.object({
-          status: z.enum(["pending", "approved", "rejected", "all"]).default("all"),
-        })
-      )
-      .query(async ({ input }) => {
-        const status = input.status === "all" ? undefined : input.status;
-        const posts = await getAllPosts(status);
+      .query(async () => {
+        const posts = await getAllPosts();
         if (posts.length === 0) return [];
-
         const postIds = posts.map((p) => p.id);
         const photos = await getPhotosForPosts(postIds);
-
         return posts.map((post) => ({
           ...post,
           photos: photos.filter((ph) => ph.postId === post.id),
@@ -116,26 +106,25 @@ export const appRouter = router({
         return { ...post, photos };
       }),
 
-    // 管理者: ステータス更新
-    updateStatus: adminProcedure
-      .input(
-        z.object({
-          id: z.number(),
-          status: z.enum(["pending", "approved", "rejected"]),
-          adminNote: z.string().optional(),
-        })
-      )
-      .mutation(async ({ input }) => {
-        await updatePostStatus(input.id, input.status, input.adminNote);
-        return { success: true };
-      }),
-
     // 管理者: 投稿削除
     delete: adminProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         await deletePost(input.id);
         return { success: true };
+      }),
+
+    // 管理者: CSVエクスポート用データ取得
+    exportCsv: adminProcedure
+      .query(async () => {
+        const posts = await getAllPosts();
+        if (posts.length === 0) return [];
+        const postIds = posts.map((p) => p.id);
+        const photos = await getPhotosForPosts(postIds);
+        return posts.map((post) => ({
+          ...post,
+          photos: photos.filter((ph) => ph.postId === post.id),
+        }));
       }),
   }),
 });

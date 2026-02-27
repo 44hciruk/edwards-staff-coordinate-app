@@ -30,9 +30,17 @@ interface UploadedPhoto {
 }
 
 const STORES = [
-  "札幌大丸", "仙台三越", "東京伊勢丹新宿店", "東京高島屋", "東京松屋銀座",
-  "横浜高島屋", "名古屋松坂屋", "大阪阪急うめだ", "大阪髙島屋", "神戸大丸",
-  "広島三越", "福岡岩田屋", "その他",
+  "EDWARD'S 新宿高峳屋店",
+  "EDWARD'S 大丸東京店",
+  "EDWARD'S 横浜高峳屋店",
+  "EDWARD'S そごう千葉店",
+  "EDWARD'S 大阪高峳屋店",
+  "EDWARD'S 京都高峳屋店",
+  "EDWARD'S 大丸京都店",
+  "EDWARD'S 山陽百貨店",
+  "EDWARD'S Select あべのハルカス近鉄本店",
+  "EDWARD'S Select 鶴屋百貨店",
+  "EDWARD'S 本社",
 ];
 
 export default function SubmitForm() {
