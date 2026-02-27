@@ -18,15 +18,16 @@ export default function Home() {
         /* PC overrides (768px+) */
         @media (min-width: 768px) {
           .h-header { padding: 20px 56px 0 !important; }
-          .h-header-title { font-size: 0.9rem !important; }
+          .h-header-title { font-size: 1.1rem !important; }
           .h-admin-btn { font-size: 0.72rem !important; padding: 8px 18px !important; min-height: 38px !important; }
           .h-admin-icon { width: 13px !important; height: 13px !important; }
-          .h-main { padding: 16px 56px 14px !important; }
-          .h-sublabel { font-size: 0.72rem !important; margin-bottom: 10px !important; }
+          .h-main { padding: 16px 56px 14px !important; justify-content: space-between !important; }
+          .h-top-section { flex: 1 !important; display: flex !important; flex-direction: column !important; justify-content: flex-start !important; }
+          .h-sublabel { font-size: 1rem !important; margin-bottom: 10px !important; letter-spacing: 0.3em !important; }
           .h-logo-svg { width: calc(80vw - 112px) !important; max-width: none !important; margin-bottom: 2px !important; }
           .h-h1 { font-size: min(20vw, 26dvh) !important; line-height: 0.88 !important; }
-          .h-divider { margin-top: 16px !important; margin-bottom: 14px !important; }
-          .h-bottom { flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 32px !important; }
+          .h-divider { margin-top: 0 !important; margin-bottom: 14px !important; }
+          .h-bottom { flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 32px !important; margin-top: 0 !important; }
           .h-desc { font-size: 1.05rem !important; white-space: nowrap !important; }
           .h-cta-btn { font-size: 0.92rem !important; min-height: 52px !important; padding: 0 28px !important; }
           .h-admin-btn { font-size: 0.88rem !important; padding: 0 28px !important; min-height: 52px !important; border-radius: 100px !important; }
@@ -109,7 +110,7 @@ export default function Home() {
           }}
         >
           {/* Top: sublabel + logo + titles */}
-          <div style={{ flexShrink: 0 }}>
+          <div className="h-top-section" style={{ flexShrink: 0 }}>
             <motion.p
               className="h-sublabel"
               initial={{ opacity: 0, y: 10 }}
