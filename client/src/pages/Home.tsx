@@ -2,26 +2,30 @@ import { Link } from "wouter";
 import { ArrowUpRight, LayoutDashboard } from "lucide-react";
 import { useAuth } from "@/_core/hooks/useAuth";
 
+// ネイビーカラーパレット
+const NAVY = "#0d1b2a";
+const NAVY_LIGHT = "#1a2e42";
+const NAVY_BORDER = "#243a52";
+const CREAM = "#f0ede8";
+const MUTED = "#7a9ab5";
+
 export default function Home() {
   const { user } = useAuth();
 
   return (
     <div
       className="min-h-screen flex flex-col"
-      style={{ background: "#0a0a0a", color: "#f5f5f0" }}
+      style={{ background: NAVY, color: CREAM }}
     >
       {/* Nav */}
-      <header
-        className="px-6 pt-8 pb-0 flex items-center justify-between"
-        style={{ fontFamily: "'DM Sans', sans-serif" }}
-      >
+      <header className="px-6 pt-8 pb-0 flex items-center justify-between">
         <span
           style={{
-            fontSize: "0.65rem",
-            letterSpacing: "0.3em",
-            fontWeight: 400,
-            color: "#888",
-            textTransform: "uppercase",
+            fontFamily: "'Noto Serif JP', serif",
+            fontSize: "0.85rem",
+            fontWeight: 300,
+            letterSpacing: "0.2em",
+            color: CREAM,
           }}
         >
           EDWARD'S
@@ -34,9 +38,9 @@ export default function Home() {
                 fontSize: "0.65rem",
                 letterSpacing: "0.15em",
                 fontWeight: 400,
-                color: "#888",
+                color: MUTED,
                 background: "transparent",
-                border: "1px solid #333",
+                border: `1px solid ${NAVY_BORDER}`,
                 borderRadius: "100px",
                 padding: "6px 14px",
                 display: "flex",
@@ -52,16 +56,15 @@ export default function Home() {
         )}
       </header>
 
-      {/* Hero — full viewport height */}
+      {/* Hero */}
       <main className="flex-1 flex flex-col justify-between px-6 pt-16 pb-12">
-        {/* Large headline */}
         <div>
           <p
             style={{
               fontFamily: "'DM Sans', sans-serif",
-              fontSize: "0.65rem",
-              letterSpacing: "0.3em",
-              color: "#555",
+              fontSize: "0.6rem",
+              letterSpacing: "0.35em",
+              color: MUTED,
               marginBottom: "1.5rem",
               textTransform: "uppercase",
             }}
@@ -69,6 +72,7 @@ export default function Home() {
             Staff Coordinate
           </p>
 
+          {/* Large headline */}
           <h1
             style={{
               fontFamily: "'DM Sans', sans-serif",
@@ -76,7 +80,7 @@ export default function Home() {
               fontWeight: 300,
               lineHeight: 0.9,
               letterSpacing: "-0.03em",
-              color: "#f5f5f0",
+              color: CREAM,
               marginBottom: "0.2rem",
             }}
           >
@@ -90,23 +94,24 @@ export default function Home() {
               lineHeight: 0.9,
               letterSpacing: "-0.03em",
               color: "transparent",
-              WebkitTextStroke: "1px #f5f5f0",
+              WebkitTextStroke: `1px ${CREAM}`,
               marginBottom: "2.5rem",
             }}
           >
             SNAP
           </h1>
 
-          {/* Thin divider */}
+          {/* Divider */}
           <div
             style={{
               width: "100%",
               height: "1px",
-              background: "linear-gradient(to right, #333, transparent)",
+              background: `linear-gradient(to right, ${NAVY_BORDER}, transparent)`,
               marginBottom: "2rem",
             }}
           />
 
+          {/* Description */}
           <p
             style={{
               fontFamily: "'Zen Kaku Gothic New', sans-serif",
@@ -114,24 +119,24 @@ export default function Home() {
               fontWeight: 300,
               letterSpacing: "0.08em",
               lineHeight: 2,
-              color: "#888",
+              color: MUTED,
               maxWidth: "280px",
             }}
           >
             着用アイテムや写真を入力して送信してください。
-            いただいた情報はECサイトに掲載されます。
+            情報はECサイトに掲載されます。
           </p>
         </div>
 
         {/* Bottom section */}
         <div>
-          {/* Store count badge */}
+          {/* Badge */}
           <div
             style={{
               display: "inline-flex",
               alignItems: "center",
               gap: "8px",
-              border: "1px solid #222",
+              border: `1px solid ${NAVY_BORDER}`,
               borderRadius: "100px",
               padding: "8px 16px",
               marginBottom: "2rem",
@@ -139,25 +144,26 @@ export default function Home() {
           >
             <span
               style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: "0.65rem",
-                letterSpacing: "0.2em",
-                color: "#555",
-                textTransform: "uppercase",
+                fontFamily: "'Noto Serif JP', serif",
+                fontSize: "0.7rem",
+                letterSpacing: "0.15em",
+                color: MUTED,
+                fontWeight: 300,
               }}
             >
-              10 Stores
+              EDWARD'S
             </span>
-            <span style={{ width: "1px", height: "10px", background: "#333" }} />
+            <span style={{ width: "1px", height: "10px", background: NAVY_BORDER }} />
             <span
               style={{
                 fontFamily: "'Zen Kaku Gothic New', sans-serif",
                 fontSize: "0.65rem",
                 letterSpacing: "0.1em",
-                color: "#555",
+                color: MUTED,
+                fontWeight: 300,
               }}
             >
-              全国百貨店
+              スタッフ専用フォーム
             </span>
           </div>
 
@@ -167,15 +173,14 @@ export default function Home() {
               style={{
                 width: "100%",
                 height: "60px",
-                background: "#f5f5f0",
-                color: "#0a0a0a",
+                background: CREAM,
+                color: NAVY,
                 border: "none",
                 borderRadius: "8px",
                 fontFamily: "'DM Sans', sans-serif",
                 fontSize: "0.75rem",
                 fontWeight: 400,
                 letterSpacing: "0.15em",
-                textTransform: "uppercase",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
@@ -196,15 +201,15 @@ export default function Home() {
       {/* Footer */}
       <footer
         className="px-6 py-5 flex items-center justify-between"
-        style={{ borderTop: "1px solid #1a1a1a" }}
+        style={{ borderTop: `1px solid ${NAVY_BORDER}` }}
       >
         <span
           style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "0.6rem",
-            letterSpacing: "0.25em",
-            color: "#333",
-            textTransform: "uppercase",
+            fontFamily: "'Noto Serif JP', serif",
+            fontSize: "0.65rem",
+            letterSpacing: "0.2em",
+            color: NAVY_BORDER,
+            fontWeight: 300,
           }}
         >
           © EDWARD'S
@@ -214,7 +219,7 @@ export default function Home() {
             fontFamily: "'DM Sans', sans-serif",
             fontSize: "0.6rem",
             letterSpacing: "0.15em",
-            color: "#333",
+            color: NAVY_BORDER,
           }}
         >
           Staff Snap App
