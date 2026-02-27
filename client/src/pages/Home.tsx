@@ -12,23 +12,26 @@ export default function Home() {
   return (
     <>
       <style>{`
+        /* Mobile defaults */
+        .h-h1 { font-size: min(18vw, 5rem); }
+        .h-logo-svg { width: min(72vw, 380px); }
         /* PC overrides (768px+) */
         @media (min-width: 768px) {
-          .h-header { padding: 24px 56px 0 !important; }
-          .h-header-title { font-size: 1rem !important; }
-          .h-admin-btn { font-size: 0.78rem !important; padding: 10px 20px !important; min-height: 42px !important; }
-          .h-admin-icon { width: 14px !important; height: 14px !important; }
-          .h-main { padding: 28px 56px 20px !important; overflow: visible !important; }
-          .h-sublabel { font-size: 0.78rem !important; margin-bottom: 18px !important; }
-          .h-logo-svg { width: 62vw !important; max-width: 900px !important; margin-bottom: 6px !important; }
-          .h-h1 { font-size: 18.5vw !important; }
-          .h-divider { margin-top: 28px !important; margin-bottom: 22px !important; }
-          .h-bottom { flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 40px !important; }
-          .h-desc { font-size: 0.96rem !important; }
-          .h-cta-btn { font-size: 1rem !important; min-height: 60px !important; padding: 0 34px !important; }
-          .h-footer { padding: 14px 56px 22px !important; text-align: left !important; }
-          .h-footer-copy { font-size: 0.74rem !important; }
-          .h-footer-credit { font-size: 0.64rem !important; }
+          .h-header { padding: 20px 56px 0 !important; }
+          .h-header-title { font-size: 0.9rem !important; }
+          .h-admin-btn { font-size: 0.72rem !important; padding: 8px 18px !important; min-height: 38px !important; }
+          .h-admin-icon { width: 13px !important; height: 13px !important; }
+          .h-main { padding: 16px 56px 14px !important; }
+          .h-sublabel { font-size: 0.72rem !important; margin-bottom: 10px !important; }
+          .h-logo-svg { width: calc(80vw - 112px) !important; max-width: none !important; margin-bottom: 2px !important; }
+          .h-h1 { font-size: 25.5vw !important; line-height: 0.88 !important; }
+          .h-divider { margin-top: 16px !important; margin-bottom: 14px !important; }
+          .h-bottom { flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 32px !important; }
+          .h-desc { font-size: 0.88rem !important; }
+          .h-cta-btn { font-size: 0.92rem !important; min-height: 52px !important; padding: 0 28px !important; }
+          .h-footer { padding: 10px 56px 14px !important; text-align: left !important; }
+          .h-footer-copy { font-size: 0.68rem !important; }
+          .h-footer-credit { font-size: 0.58rem !important; }
         }
       `}</style>
       <div
@@ -151,7 +154,6 @@ export default function Home() {
                 className="h-h1"
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
-                  fontSize: "min(18vw, 5rem)",
                   fontWeight: 300,
                   lineHeight: 0.9,
                   letterSpacing: "-0.02em",
@@ -166,7 +168,6 @@ export default function Home() {
                 className="h-h1"
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
-                  fontSize: "min(18vw, 5rem)",
                   fontWeight: 300,
                   lineHeight: 0.9,
                   letterSpacing: "-0.02em",

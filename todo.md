@@ -146,3 +146,6 @@
 - [x] トップページPC表示：STUFF'S BUY APPのフォントサイズを大幅拡大
 - [x] トップページPC表示：STAFF COORDINATE・説明文・CTAボタンも拡大
 - [x] スマホ表示は現状維持
+
+## UI修正（v25）
+- [x] トップページPC表示：ロゴ・STUFF'S BUY APPのサイズを縮小して説明文・CTAが100dvh内に収まるよう調整
