@@ -24,7 +24,7 @@ export default function Home() {
           .h-main { padding: 16px 56px 14px !important; }
           .h-sublabel { font-size: 0.72rem !important; margin-bottom: 10px !important; }
           .h-logo-svg { width: calc(80vw - 112px) !important; max-width: none !important; margin-bottom: 2px !important; }
-          .h-h1 { font-size: 25.5vw !important; line-height: 0.88 !important; }
+          .h-h1 { font-size: 20vw !important; line-height: 0.88 !important; }
           .h-divider { margin-top: 16px !important; margin-bottom: 14px !important; }
           .h-bottom { flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 32px !important; }
           .h-desc { font-size: 0.88rem !important; }
