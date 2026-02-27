@@ -36,9 +36,9 @@ export default function Home() {
             <div className="h-px w-12 bg-gradient-to-l from-transparent to-[oklch(0.78_0.08_75)]" />
           </div>
 
-          <h2 className="text-3xl leading-tight mb-4" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+          <h2 className="leading-snug mb-4" style={{ fontFamily: "'Noto Serif JP', serif", fontSize: "clamp(1.6rem, 6vw, 2.4rem)", fontWeight: 300, letterSpacing: "0.05em" }}>
             EDWARD'S<br />
-            <em>スタッフスナップアプリ</em>
+            <span style={{ fontWeight: 400 }}>スタッフスナップ</span>
           </h2>
 
           <div className="h-px w-16 mx-auto my-6 bg-gradient-to-r from-transparent via-[oklch(0.78_0.08_75)] to-transparent" />
