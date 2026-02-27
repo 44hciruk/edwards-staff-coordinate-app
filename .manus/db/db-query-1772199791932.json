@@ -1,0 +1,21 @@
+{
+  "query": "SELECT * FROM users;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3QwBJ9gNitfcu3U.0c506b20b2d1 --database 7qPhJ2oWzFc75QY7SvDpnx --execute SELECT * FROM users;",
+  "rows": [
+    {
+      "id": "1",
+      "openId": "PeXUrx62YVQd4LR654zEYC",
+      "name": "K S",
+      "email": "kurich44@gmail.com",
+      "loginMethod": "google",
+      "role": "admin",
+      "createdAt": "2026-02-27 09:51:02",
+      "updatedAt": "2026-02-27 13:41:54",
+      "lastSignedIn": "2026-02-27 13:41:54"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\topenId\tname\temail\tloginMethod\trole\tcreatedAt\tupdatedAt\tlastSignedIn\n1\tPeXUrx62YVQd4LR654zEYC\tK S\tkurich44@gmail.com\tgoogle\tadmin\t2026-02-27 09:51:02\t2026-02-27 13:41:54\t2026-02-27 13:41:54\n",
+  "stderr": "",
+  "execution_time_ms": 1540
+}
