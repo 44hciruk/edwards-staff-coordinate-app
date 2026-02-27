@@ -10,30 +10,40 @@ const WHITE = "#ffffff";
 
 export default function Home() {
   return (
-    <div
-      style={{
-        height: "100dvh",
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-        background: NAVY,
-        color: CREAM,
-      }}
-    >
-      {/* Inner container for PC max-width */}
+    <>
+      <style>{`
+        /* PC overrides (768px+) */
+        @media (min-width: 768px) {
+          .h-header { padding: 24px 56px 0 !important; }
+          .h-header-title { font-size: 1rem !important; }
+          .h-admin-btn { font-size: 0.78rem !important; padding: 10px 20px !important; min-height: 42px !important; }
+          .h-admin-icon { width: 14px !important; height: 14px !important; }
+          .h-main { padding: 28px 56px 20px !important; overflow: visible !important; }
+          .h-sublabel { font-size: 0.78rem !important; margin-bottom: 18px !important; }
+          .h-logo-svg { width: 62vw !important; max-width: 900px !important; margin-bottom: 6px !important; }
+          .h-h1 { font-size: 18.5vw !important; }
+          .h-divider { margin-top: 28px !important; margin-bottom: 22px !important; }
+          .h-bottom { flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 40px !important; }
+          .h-desc { font-size: 0.96rem !important; }
+          .h-cta-btn { font-size: 1rem !important; min-height: 60px !important; padding: 0 34px !important; }
+          .h-footer { padding: 14px 56px 22px !important; text-align: left !important; }
+          .h-footer-copy { font-size: 0.74rem !important; }
+          .h-footer-credit { font-size: 0.64rem !important; }
+        }
+      `}</style>
       <div
         style={{
-          width: "100%",
-          maxWidth: "640px",
-          margin: "0 auto",
-          height: "100%",
+          height: "100dvh",
+          overflow: "hidden",
           display: "flex",
           flexDirection: "column",
-          overflow: "hidden",
+          background: NAVY,
+          color: CREAM,
         }}
       >
         {/* Header */}
         <header
+          className="h-header"
           style={{
             display: "flex",
             alignItems: "center",
@@ -43,6 +53,7 @@ export default function Home() {
           }}
         >
           <span
+            className="h-header-title"
             style={{
               fontFamily: "'DM Sans', sans-serif",
               fontSize: "0.68rem",
@@ -55,6 +66,7 @@ export default function Home() {
           </span>
           <Link href="/admin">
             <button
+              className="h-admin-btn"
               style={{
                 fontFamily: "'DM Sans', sans-serif",
                 fontSize: "0.6rem",
@@ -73,7 +85,7 @@ export default function Home() {
                 WebkitTapHighlightColor: "transparent",
               }}
             >
-              <LayoutDashboard style={{ width: 12, height: 12 }} />
+              <LayoutDashboard className="h-admin-icon" style={{ width: 12, height: 12 }} />
               管理
             </button>
           </Link>
@@ -81,18 +93,20 @@ export default function Home() {
 
         {/* Hero */}
         <main
+          className="h-main"
           style={{
             flex: 1,
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            padding: "40px 24px 24px",
-            overflow: "hidden",
+            padding: "28px 24px 20px",
+            minHeight: 0,
           }}
         >
-          <div>
-            {/* Sub label */}
+          {/* Top: sublabel + logo + titles */}
+          <div style={{ flexShrink: 0 }}>
             <motion.p
+              className="h-sublabel"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
@@ -101,27 +115,27 @@ export default function Home() {
                 fontSize: "0.58rem",
                 letterSpacing: "0.4em",
                 color: MUTED,
-                marginBottom: "20px",
+                marginBottom: "14px",
                 textTransform: "uppercase",
               }}
             >
               Staff Coordinate
             </motion.p>
 
-            {/* Large headline */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
             >
               <svg
+                className="h-logo-svg"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 1200 215.63"
                 style={{
                   display: "block",
-                  width: "min(70vw, 380px)",
+                  width: "min(72vw, 380px)",
                   height: "auto",
-                  margin: "0 0 8px",
+                  margin: "0 0 4px",
                 }}
                 aria-label="EDWARD'S"
                 role="img"
@@ -134,25 +148,27 @@ export default function Home() {
                 <path fill={CREAM} d="M1144.78,85.12c-33.61-23.22-33.36-39.97-33.37-45.3-.01-6.77,4.57-26.76,21.38-26.8,28.43-.06,39.96,53.29,48.59,53.27,2.67,0,4.62-2.43,4.4-4.94l-4.24-50.53c-.21-2.49-2.53-4.39-5.2-4.16-5.16.01-5.09,6.35-10.71,6.36-5.63.01-11.33-8.82-29.37-8.78-48.65.1-54.5,41.98-54.48,52.74.02,6.68,1.02,24.39,13.07,37.22,12.03,12.82,26.83,22.74,42.09,32.73,15.23,9.99,30.9,26.05,30.95,45.71.04,19.68-10.18,31.59-25.35,31.62-15.16.04-25.42-7.98-35.21-28.17-6.05-12.65-13.01-31.41-17.88-31.51-2.49-.09-4.48,2.49-4.38,5.35l1.74,58.37c.09,2.89,2.21,5.19,4.72,5.13,2.52-.07,4.45-2.49,4.36-5.39,0,0,2.65-8.43,12.26-1.82,3.88,2.67,7.45,8.64,33.9,8.58,27.16-.06,58.02-21.09,57.95-53.62-.07-32.51-15.52-48.57-55.22-76.05Z"/>
               </svg>
               <h1
+                className="h-h1"
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
                   fontSize: "min(18vw, 5rem)",
                   fontWeight: 300,
-                  lineHeight: 0.92,
+                  lineHeight: 0.9,
                   letterSpacing: "-0.02em",
                   color: "transparent",
                   WebkitTextStroke: `1px ${CREAM}`,
-                  margin: "4px 0",
+                  margin: "2px 0",
                 }}
               >
                 STUFF'S
               </h1>
               <h1
+                className="h-h1"
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
                   fontSize: "min(18vw, 5rem)",
                   fontWeight: 300,
-                  lineHeight: 0.92,
+                  lineHeight: 0.9,
                   letterSpacing: "-0.02em",
                   color: "transparent",
                   WebkitTextStroke: `1px ${CREAM}`,
@@ -162,9 +178,13 @@ export default function Home() {
                 BUY APP
               </h1>
             </motion.div>
+          </div>
 
+          {/* Bottom section */}
+          <div style={{ flexShrink: 0 }}>
             {/* Divider */}
             <motion.div
+              className="h-divider"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 0.8, delay: 0.5 }}
@@ -172,86 +192,101 @@ export default function Home() {
                 width: "100%",
                 height: "1px",
                 background: `linear-gradient(to right, ${NAVY_BORDER}, transparent)`,
-                marginTop: "32px",
-                marginBottom: "24px",
+                marginTop: "20px",
+                marginBottom: "16px",
                 transformOrigin: "left",
               }}
             />
 
-            {/* Description */}
-            <motion.p
+            {/* Description + CTA row */}
+            <motion.div
+              className="h-bottom"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.7 }}
               style={{
-                fontFamily: "'Zen Kaku Gothic New', sans-serif",
-                fontSize: "0.82rem",
-                fontWeight: 300,
-                letterSpacing: "0.04em",
-                lineHeight: 1.9,
-                color: MUTED,
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px",
               }}
             >
-              着用アイテムや写真を入力して送信してください。
-              <br />
-              情報はECサイトに掲載されます。
-            </motion.p>
-          </div>
-
-          {/* CTA Button */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.9 }}
-            style={{ marginTop: "40px", flexShrink: 0, textAlign: "center" }}
-          >
-            <Link href="/submit">
-              <button
+              <p
+                className="h-desc"
                 style={{
-                  display: "inline-flex",
-                  minHeight: "56px",
-                  background: CREAM,
-                  color: NAVY,
-                  border: "none",
-                  borderRadius: "100px",
                   fontFamily: "'Zen Kaku Gothic New', sans-serif",
-                  fontSize: "0.88rem",
-                  fontWeight: 500,
-                  letterSpacing: "0.08em",
-                  alignItems: "center",
-                  gap: "12px",
-                  padding: "0 28px",
-                  cursor: "pointer",
-                  transition: "transform 0.15s, opacity 0.15s",
-                  WebkitTapHighlightColor: "transparent",
+                  fontSize: "0.82rem",
+                  fontWeight: 300,
+                  letterSpacing: "0.04em",
+                  lineHeight: 1.9,
+                  color: MUTED,
+                  margin: 0,
                 }}
-                onTouchStart={(e) => {
-                  e.currentTarget.style.transform = "scale(0.98)";
-                  e.currentTarget.style.opacity = "0.9";
-                }}
-                onTouchEnd={(e) => {
-                  e.currentTarget.style.transform = "scale(1)";
-                  e.currentTarget.style.opacity = "1";
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
               >
-                <span>入力フォームへ進む</span>
-                <ArrowRight style={{ width: 20, height: 20 }} />
-              </button>
-            </Link>
-          </motion.div>
+                着用アイテムや写真を入力して送信してください。
+                <br />
+                情報はECサイトに掲載されます。
+              </p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.9 }}
+                style={{ flexShrink: 0 }}
+              >
+                <Link href="/submit">
+                  <button
+                    className="h-cta-btn"
+                    style={{
+                      display: "inline-flex",
+                      minHeight: "52px",
+                      background: CREAM,
+                      color: NAVY,
+                      border: "none",
+                      borderRadius: "100px",
+                      fontFamily: "'Zen Kaku Gothic New', sans-serif",
+                      fontSize: "0.88rem",
+                      fontWeight: 500,
+                      letterSpacing: "0.08em",
+                      alignItems: "center",
+                      gap: "12px",
+                      padding: "0 28px",
+                      cursor: "pointer",
+                      transition: "transform 0.15s, opacity 0.15s",
+                      WebkitTapHighlightColor: "transparent",
+                      whiteSpace: "nowrap",
+                    }}
+                    onTouchStart={(e) => {
+                      e.currentTarget.style.transform = "scale(0.98)";
+                      e.currentTarget.style.opacity = "0.9";
+                    }}
+                    onTouchEnd={(e) => {
+                      e.currentTarget.style.transform = "scale(1)";
+                      e.currentTarget.style.opacity = "1";
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
+                    onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+                  >
+                    <span>入力フォームへ進む</span>
+                    <ArrowRight style={{ width: 20, height: 20 }} />
+                  </button>
+                </Link>
+              </motion.div>
+            </motion.div>
+          </div>
         </main>
 
         {/* Footer */}
         <footer
+          className="h-footer"
           style={{
-            padding: "16px 24px 28px",
+            padding: "10px 24px 20px",
             borderTop: `1px solid ${NAVY_BORDER}`,
             flexShrink: 0,
+            textAlign: "center",
           }}
         >
           <p
+            className="h-footer-copy"
             style={{
               fontFamily: "'DM Sans', sans-serif",
               fontSize: "0.6rem",
@@ -259,12 +294,13 @@ export default function Home() {
               color: WHITE,
               fontWeight: 300,
               margin: 0,
-              marginBottom: "4px",
+              marginBottom: "3px",
             }}
           >
             © EDWARD'S Stuff's Buy App
           </p>
           <p
+            className="h-footer-credit"
             style={{
               fontFamily: "'DM Sans', sans-serif",
               fontSize: "0.52rem",
@@ -279,6 +315,6 @@ export default function Home() {
           </p>
         </footer>
       </div>
-    </div>
+    </>
   );
 }
