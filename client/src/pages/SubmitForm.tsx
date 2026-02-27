@@ -347,9 +347,10 @@ export default function SubmitForm() {
               <Textarea
                 id="outfitDescription"
                 placeholder="例：トップス / ホワイトブラウス（品番: AB-123）&#10;ボトムス / ネイビースカート（品番: CD-456）&#10;シューズ / ベージュパンプス"
-                rows={4}
+                rows={7}
                 {...register("outfitDescription")}
-                className="resize-none text-sm"
+                className="resize-y text-sm"
+                style={{ minHeight: "160px" }}
               />
               {errors.outfitDescription && (
                 <p className="text-destructive text-xs mt-1">{errors.outfitDescription.message}</p>
@@ -363,9 +364,10 @@ export default function SubmitForm() {
               <Textarea
                 id="comment"
                 placeholder="例：今季のトレンドを取り入れながら、百貨店らしい上品さを意識しました。"
-                rows={3}
+                rows={5}
                 {...register("comment")}
-                className="resize-none text-sm"
+                className="resize-y text-sm"
+                style={{ minHeight: "110px" }}
               />
             </div>
           </div>
