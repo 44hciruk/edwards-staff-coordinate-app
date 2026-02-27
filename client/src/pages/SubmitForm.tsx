@@ -8,16 +8,16 @@ import { toast } from "sonner";
 import { Camera, X, CheckCircle, Loader2, ImagePlus, ArrowLeft, Send } from "lucide-react";
 import { Link } from "wouter";
 
-// 白背景・ネイビー差し色パレット
+/* ── カラーパレット ── */
 const BG = "#ffffff";
 const BG_SOFT = "#f7f8fa";
 const NAVY = "#0d1b2a";
-const NAVY_LIGHT = "#1a2e42";
 const NAVY_BORDER = "#d0d9e3";
 const NAVY_ACCENT = "#243a52";
 const TEXT = "#0d1b2a";
 const TEXT_MUTED = "#6b8099";
 const TEXT_LIGHT = "#9ab0c4";
+const CREAM = "#f0ede8";
 
 const schema = z.object({
   staffName: z.string().min(1, "お名前を入力してください").max(100),
@@ -51,45 +51,49 @@ const STORES = [
   "EDWARD'S 本社",
 ];
 
+/* ── モバイル最適化スタイル ── */
 const inputStyle: React.CSSProperties = {
   width: "100%",
   background: BG_SOFT,
   border: `1px solid ${NAVY_BORDER}`,
-  borderRadius: "6px",
+  borderRadius: "10px",
   color: TEXT,
   fontFamily: "'Zen Kaku Gothic New', sans-serif",
-  fontSize: "0.9rem",
-  fontWeight: 300,
-  letterSpacing: "0.04em",
-  padding: "11px 14px",
+  fontSize: "16px", // iOS zoom防止のため16px以上
+  fontWeight: 400,
+  letterSpacing: "0.03em",
+  padding: "14px 16px",
   outline: "none",
   transition: "border-color 0.2s",
+  WebkitAppearance: "none" as any,
+  minHeight: "48px",
+  boxSizing: "border-box" as const,
 };
 
 const labelStyle: React.CSSProperties = {
-  fontFamily: "'DM Sans', sans-serif",
-  fontSize: "0.6rem",
-  letterSpacing: "0.25em",
-  textTransform: "uppercase" as const,
-  color: TEXT_MUTED,
+  fontFamily: "'Zen Kaku Gothic New', sans-serif",
+  fontSize: "0.82rem",
+  fontWeight: 500,
+  letterSpacing: "0.06em",
+  color: TEXT,
   display: "block",
-  marginBottom: "6px",
+  marginBottom: "8px",
 };
 
 const sectionTitleStyle: React.CSSProperties = {
   fontFamily: "'DM Sans', sans-serif",
-  fontSize: "0.58rem",
+  fontSize: "0.62rem",
   letterSpacing: "0.3em",
   textTransform: "uppercase" as const,
   color: TEXT_LIGHT,
-  marginBottom: "16px",
+  marginBottom: "20px",
 };
 
-const dividerStyle: React.CSSProperties = {
-  width: "100%",
-  height: "1px",
-  background: NAVY_BORDER,
-  margin: "24px 0",
+const errorStyle: React.CSSProperties = {
+  color: "#c0392b",
+  fontSize: "0.78rem",
+  marginTop: "6px",
+  fontFamily: "'Zen Kaku Gothic New', sans-serif",
 };
 
 export default function SubmitForm() {
@@ -169,60 +173,65 @@ export default function SubmitForm() {
     });
   };
 
-  // 送信完了画面
+  /* ── 送信完了画面 ── */
   if (submitted) {
     return (
       <div
-        className="min-h-screen flex flex-col items-center justify-center px-6 py-16"
-        style={{ background: BG, color: TEXT }}
+        className="flex flex-col items-center justify-center px-6"
+        style={{ background: BG, color: TEXT, minHeight: "100dvh" }}
       >
-        <div className="text-center max-w-sm">
+        <div className="text-center w-full" style={{ maxWidth: "360px" }}>
           <div style={{
-            width: 56, height: 56, borderRadius: "50%",
+            width: 64, height: 64, borderRadius: "50%",
             background: "#eaf5f0", display: "flex", alignItems: "center",
-            justifyContent: "center", margin: "0 auto 24px",
+            justifyContent: "center", margin: "0 auto 28px",
           }}>
-            <CheckCircle style={{ width: 28, height: 28, color: "#3a9a6a" }} strokeWidth={1.5} />
+            <CheckCircle style={{ width: 32, height: 32, color: "#3a9a6a" }} strokeWidth={1.5} />
           </div>
           <h2 style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "1.6rem", fontWeight: 300,
-            letterSpacing: "-0.01em", color: TEXT, marginBottom: "12px",
+            fontFamily: "'Zen Kaku Gothic New', sans-serif",
+            fontSize: "1.4rem", fontWeight: 500,
+            color: TEXT, marginBottom: "12px",
           }}>
-            ありがとうございます
+            送信完了
           </h2>
           <p style={{
             fontFamily: "'Zen Kaku Gothic New', sans-serif",
-            fontSize: "0.8rem", fontWeight: 300,
-            letterSpacing: "0.06em", lineHeight: 2,
-            color: TEXT_MUTED, marginBottom: "32px",
+            fontSize: "0.88rem", fontWeight: 400,
+            lineHeight: 1.9,
+            color: TEXT_MUTED, marginBottom: "36px",
           }}>
-            コーディネートの投稿を受け付けました。<br />
+            コーディネートの投稿を受け付けました。
+            <br />
             情報はECサイトに掲載されます。
           </p>
-          <div style={dividerStyle} />
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "24px" }}>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             <button
               onClick={() => setSubmitted(false)}
               style={{
-                width: "100%", height: "52px",
-                background: NAVY, color: "#f0ede8",
-                border: "none", borderRadius: "6px",
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: "0.75rem", fontWeight: 400,
-                letterSpacing: "0.15em", cursor: "pointer",
+                width: "100%", minHeight: "56px",
+                background: NAVY, color: CREAM,
+                border: "none", borderRadius: "12px",
+                fontFamily: "'Zen Kaku Gothic New', sans-serif",
+                fontSize: "0.92rem", fontWeight: 500,
+                letterSpacing: "0.06em", cursor: "pointer",
+                WebkitTapHighlightColor: "transparent",
               }}
+              onTouchStart={(e) => { e.currentTarget.style.transform = "scale(0.98)"; e.currentTarget.style.opacity = "0.9"; }}
+              onTouchEnd={(e) => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.opacity = "1"; }}
             >
               続けて投稿する
             </button>
             <Link href="/">
               <button style={{
-                width: "100%", height: "52px",
+                width: "100%", minHeight: "56px",
                 background: "transparent", color: TEXT_MUTED,
-                border: `1px solid ${NAVY_BORDER}`, borderRadius: "6px",
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: "0.75rem", fontWeight: 400,
-                letterSpacing: "0.15em", cursor: "pointer",
+                border: `1px solid ${NAVY_BORDER}`, borderRadius: "12px",
+                fontFamily: "'Zen Kaku Gothic New', sans-serif",
+                fontSize: "0.92rem", fontWeight: 500,
+                letterSpacing: "0.06em", cursor: "pointer",
+                WebkitTapHighlightColor: "transparent",
               }}>
                 トップに戻る
               </button>
@@ -234,13 +243,14 @@ export default function SubmitForm() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: BG, color: TEXT }}>
-      {/* Header */}
+    <div style={{ background: BG, color: TEXT, minHeight: "100dvh" }}>
+      {/* ── ヘッダー ── */}
       <header style={{
         position: "sticky", top: 0, zIndex: 10,
-        background: `${BG}f0`, backdropFilter: "blur(12px)",
+        background: `${BG}ee`, backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
         borderBottom: `1px solid ${NAVY_BORDER}`,
-        padding: "0 24px", height: "56px",
+        padding: "0 20px", height: "52px",
         display: "flex", alignItems: "center", justifyContent: "space-between",
       }}>
         <Link href="/">
@@ -248,82 +258,120 @@ export default function SubmitForm() {
             background: "transparent", border: "none",
             color: TEXT_MUTED, cursor: "pointer",
             display: "flex", alignItems: "center", gap: "6px",
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "0.65rem", letterSpacing: "0.15em",
+            fontFamily: "'Zen Kaku Gothic New', sans-serif",
+            fontSize: "0.82rem",
+            padding: "8px 4px",
+            minHeight: "44px",
+            minWidth: "44px",
+            WebkitTapHighlightColor: "transparent",
           }}>
-            <ArrowLeft style={{ width: 14, height: 14 }} />
-            Back
+            <ArrowLeft style={{ width: 18, height: 18 }} />
+            <span>戻る</span>
           </button>
         </Link>
         <span style={{
           fontFamily: "'DM Sans', sans-serif",
-          fontSize: "0.75rem", fontWeight: 300,
-          letterSpacing: "0.25em", color: NAVY,
+          fontSize: "0.72rem", fontWeight: 400,
+          letterSpacing: "0.2em", color: NAVY,
         }}>
           EDWARD'S
         </span>
-        <div style={{ width: 48 }} />
+        <div style={{ width: 44 }} />
       </header>
 
-      <div style={{ maxWidth: "480px", margin: "0 auto", padding: "32px 24px 64px" }}>
-        {/* Page title */}
-        <div style={{ marginBottom: "32px" }}>
+      <div style={{ maxWidth: "480px", margin: "0 auto", padding: "28px 20px 48px" }}>
+        {/* ── ページタイトル ── */}
+        <div style={{ marginBottom: "28px" }}>
           <p style={sectionTitleStyle}>Coordinate Post</p>
           <h2 style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "1.6rem", fontWeight: 300,
-            letterSpacing: "-0.01em", color: TEXT, lineHeight: 1.2,
+            fontFamily: "'Zen Kaku Gothic New', sans-serif",
+            fontSize: "1.3rem", fontWeight: 500,
+            color: TEXT, lineHeight: 1.5,
           }}>
-            コーディネート<br />投稿フォーム
+            コーディネート投稿フォーム
           </h2>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          {/* ── 写真アップロード ── */}
-          <div style={{ marginBottom: "8px" }}>
+          {/* ══════ 写真アップロード ══════ */}
+          <div style={{ marginBottom: "12px" }}>
             <label style={labelStyle}>
-              写真 <span style={{ color: TEXT_LIGHT }}>（最大10枚）</span>
+              写真 <span style={{ color: TEXT_LIGHT, fontSize: "0.75rem", fontWeight: 400 }}>（最大10枚）</span>
             </label>
+
+            {/* アップロードエリア */}
             <div
               onClick={() => fileInputRef.current?.click()}
               onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
               onDragLeave={() => setDragOver(false)}
               onDrop={handleDrop}
               style={{
-                border: `1.5px dashed ${dragOver ? NAVY_ACCENT : NAVY_BORDER}`,
-                borderRadius: "8px", padding: "32px 16px",
-                textAlign: "center", cursor: "pointer",
+                border: `2px dashed ${dragOver ? NAVY_ACCENT : NAVY_BORDER}`,
+                borderRadius: "14px",
+                padding: "36px 16px",
+                textAlign: "center",
+                cursor: "pointer",
                 background: dragOver ? "#f0f4f8" : BG_SOFT,
                 transition: "all 0.2s",
+                minHeight: "120px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                WebkitTapHighlightColor: "transparent",
               }}
             >
               {uploading ? (
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
-                  <Loader2 style={{ width: 28, height: 28, color: TEXT_MUTED }} className="animate-spin" strokeWidth={1.5} />
-                  <span style={{ fontFamily: "'Zen Kaku Gothic New', sans-serif", fontSize: "0.75rem", color: TEXT_MUTED }}>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
+                  <Loader2 style={{ width: 32, height: 32, color: TEXT_MUTED }} className="animate-spin" strokeWidth={1.5} />
+                  <span style={{ fontFamily: "'Zen Kaku Gothic New', sans-serif", fontSize: "0.85rem", color: TEXT_MUTED }}>
                     アップロード中...
                   </span>
                 </div>
               ) : (
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
-                  <ImagePlus style={{ width: 28, height: 28, color: TEXT_LIGHT }} strokeWidth={1.5} />
-                  <span style={{ fontFamily: "'Zen Kaku Gothic New', sans-serif", fontSize: "0.85rem", color: TEXT_MUTED }}>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
+                  <div style={{
+                    width: 56, height: 56, borderRadius: "50%",
+                    background: "#e8eef4",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                  }}>
+                    <Camera style={{ width: 26, height: 26, color: TEXT_MUTED }} strokeWidth={1.5} />
+                  </div>
+                  <span style={{
+                    fontFamily: "'Zen Kaku Gothic New', sans-serif",
+                    fontSize: "0.92rem", fontWeight: 500, color: TEXT,
+                  }}>
                     タップして写真を選択
                   </span>
-                  <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", color: TEXT_LIGHT, letterSpacing: "0.1em" }}>
-                    またはドラッグ＆ドロップ
+                  <span style={{
+                    fontFamily: "'Zen Kaku Gothic New', sans-serif",
+                    fontSize: "0.75rem", color: TEXT_LIGHT,
+                  }}>
+                    カメラロールから選んでください
                   </span>
                 </div>
               )}
             </div>
-            <input ref={fileInputRef} type="file" accept="image/*" multiple className="hidden" onChange={handleFileChange} />
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              className="hidden"
+              onChange={handleFileChange}
+            />
 
+            {/* 写真プレビューグリッド */}
             {photos.length > 0 && (
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px", marginTop: "12px" }}>
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: "10px",
+                marginTop: "14px",
+              }}>
                 {photos.map((photo, i) => (
                   <div key={i} style={{
                     position: "relative", aspectRatio: "1",
-                    borderRadius: "6px", overflow: "hidden", background: BG_SOFT,
+                    borderRadius: "10px", overflow: "hidden", background: BG_SOFT,
                     border: `1px solid ${NAVY_BORDER}`,
                   }}>
                     <img src={photo.preview} alt={`写真 ${i + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -331,19 +379,21 @@ export default function SubmitForm() {
                       type="button"
                       onClick={() => removePhoto(i)}
                       style={{
-                        position: "absolute", top: "4px", right: "4px",
-                        background: "rgba(255,255,255,0.9)", border: "none",
-                        borderRadius: "50%", width: "20px", height: "20px",
-                        display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
+                        position: "absolute", top: "6px", right: "6px",
+                        background: "rgba(0,0,0,0.55)", border: "none",
+                        borderRadius: "50%", width: "28px", height: "28px",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        cursor: "pointer",
+                        WebkitTapHighlightColor: "transparent",
                       }}
                     >
-                      <X style={{ width: 10, height: 10, color: NAVY }} />
+                      <X style={{ width: 14, height: 14, color: "#fff" }} />
                     </button>
                     {i === 0 && (
                       <span style={{
-                        position: "absolute", bottom: "4px", left: "4px",
-                        background: NAVY, color: "#f0ede8",
-                        fontSize: "0.55rem", padding: "2px 6px", borderRadius: "3px",
+                        position: "absolute", bottom: "6px", left: "6px",
+                        background: NAVY, color: CREAM,
+                        fontSize: "0.6rem", padding: "3px 8px", borderRadius: "4px",
                         fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.1em",
                       }}>
                         MAIN
@@ -356,59 +406,80 @@ export default function SubmitForm() {
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     style={{
-                      aspectRatio: "1", borderRadius: "6px",
-                      border: `1.5px dashed ${NAVY_BORDER}`, background: BG_SOFT,
-                      display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
+                      aspectRatio: "1", borderRadius: "10px",
+                      border: `2px dashed ${NAVY_BORDER}`, background: BG_SOFT,
+                      display: "flex", flexDirection: "column",
+                      alignItems: "center", justifyContent: "center",
+                      gap: "4px", cursor: "pointer",
+                      WebkitTapHighlightColor: "transparent",
                     }}
                   >
-                    <Camera style={{ width: 18, height: 18, color: TEXT_LIGHT }} strokeWidth={1.5} />
+                    <ImagePlus style={{ width: 22, height: 22, color: TEXT_LIGHT }} strokeWidth={1.5} />
+                    <span style={{ fontSize: "0.6rem", color: TEXT_LIGHT, fontFamily: "'Zen Kaku Gothic New', sans-serif" }}>追加</span>
                   </button>
                 )}
               </div>
             )}
           </div>
 
-          <div style={dividerStyle} />
+          {/* ── 区切り線 ── */}
+          <div style={{ width: "100%", height: "1px", background: NAVY_BORDER, margin: "28px 0" }} />
 
-          {/* ── スタッフ情報 ── */}
-          <div style={{ marginBottom: "8px" }}>
+          {/* ══════ スタッフ情報 ══════ */}
+          <div style={{ marginBottom: "12px" }}>
             <p style={sectionTitleStyle}>スタッフ情報</p>
 
-            <div style={{ marginBottom: "16px" }}>
+            {/* お名前 */}
+            <div style={{ marginBottom: "20px" }}>
               <label htmlFor="staffName" style={labelStyle}>
-                お名前 <span style={{ color: "#c0392b" }}>*</span>
+                お名前 <span style={{ color: "#c0392b", fontSize: "0.75rem" }}>*</span>
               </label>
               <input
                 id="staffName"
                 placeholder="山田 太郎"
                 {...register("staffName")}
                 style={inputStyle}
+                autoComplete="name"
               />
-              {errors.staffName && (
-                <p style={{ color: "#c0392b", fontSize: "0.7rem", marginTop: "4px" }}>{errors.staffName.message}</p>
-              )}
+              {errors.staffName && <p style={errorStyle}>{errors.staffName.message}</p>}
             </div>
 
-            <div style={{ marginBottom: "16px" }}>
+            {/* 所属店舗 */}
+            <div style={{ marginBottom: "20px" }}>
               <label htmlFor="storeName" style={labelStyle}>
-                所属店舗 <span style={{ color: "#c0392b" }}>*</span>
+                所属店舗 <span style={{ color: "#c0392b", fontSize: "0.75rem" }}>*</span>
               </label>
-              <select
-                id="storeName"
-                {...register("storeName")}
-                style={{ ...inputStyle, appearance: "none" as const, color: TEXT }}
-              >
-                <option value="">店舗を選択してください</option>
-                {STORES.map((s) => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
-              </select>
-              {errors.storeName && (
-                <p style={{ color: "#c0392b", fontSize: "0.7rem", marginTop: "4px" }}>{errors.storeName.message}</p>
-              )}
+              <div style={{ position: "relative" }}>
+                <select
+                  id="storeName"
+                  {...register("storeName")}
+                  style={{
+                    ...inputStyle,
+                    paddingRight: "36px",
+                    color: TEXT,
+                  }}
+                >
+                  <option value="">店舗を選択してください</option>
+                  {STORES.map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+                {/* カスタム矢印 */}
+                <div style={{
+                  position: "absolute", right: "14px", top: "50%",
+                  transform: "translateY(-50%)",
+                  pointerEvents: "none",
+                  width: 0, height: 0,
+                  borderLeft: "5px solid transparent",
+                  borderRight: "5px solid transparent",
+                  borderTop: `6px solid ${TEXT_MUTED}`,
+                }} />
+              </div>
+              {errors.storeName && <p style={errorStyle}>{errors.storeName.message}</p>}
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px" }}>
+            {/* 年齢・身長・体重 */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "10px" }}>
               {[
                 { id: "age", label: "年齢", placeholder: "35", unit: "歳", min: 15, max: 80 },
                 { id: "height", label: "身長", placeholder: "175", unit: "cm", min: 100, max: 250 },
@@ -420,16 +491,19 @@ export default function SubmitForm() {
                     <input
                       id={id}
                       type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       placeholder={placeholder}
                       min={min}
                       max={max}
                       {...register(id as keyof FormValues)}
-                      style={{ ...inputStyle, paddingRight: "28px" }}
+                      style={{ ...inputStyle, paddingRight: "32px", textAlign: "center" }}
                     />
                     <span style={{
                       position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)",
-                      fontSize: "0.65rem", color: TEXT_LIGHT,
+                      fontSize: "0.75rem", color: TEXT_LIGHT,
                       fontFamily: "'Zen Kaku Gothic New', sans-serif",
+                      pointerEvents: "none",
                     }}>
                       {unit}
                     </span>
@@ -439,15 +513,17 @@ export default function SubmitForm() {
             </div>
           </div>
 
-          <div style={dividerStyle} />
+          {/* ── 区切り線 ── */}
+          <div style={{ width: "100%", height: "1px", background: NAVY_BORDER, margin: "28px 0" }} />
 
-          {/* ── コーディネート情報 ── */}
+          {/* ══════ コーディネート情報 ══════ */}
           <div>
             <p style={sectionTitleStyle}>コーディネート情報</p>
 
-            <div style={{ marginBottom: "16px" }}>
+            {/* 着用アイテム */}
+            <div style={{ marginBottom: "20px" }}>
               <label htmlFor="outfitDescription" style={labelStyle}>
-                着用アイテム <span style={{ color: "#c0392b" }}>*</span>
+                着用アイテム <span style={{ color: "#c0392b", fontSize: "0.75rem" }}>*</span>
               </label>
               <Textarea
                 id="outfitDescription"
@@ -457,19 +533,18 @@ export default function SubmitForm() {
                 style={{
                   ...inputStyle,
                   minHeight: "200px",
-                  resize: "both",
-                  lineHeight: 1.8,
-                  padding: "12px 14px",
+                  resize: "vertical" as const,
+                  lineHeight: 1.9,
+                  padding: "14px 16px",
                   overflow: "auto",
                 }}
                 className=""
               />
-              {errors.outfitDescription && (
-                <p style={{ color: "#c0392b", fontSize: "0.7rem", marginTop: "4px" }}>{errors.outfitDescription.message}</p>
-              )}
+              {errors.outfitDescription && <p style={errorStyle}>{errors.outfitDescription.message}</p>}
             </div>
 
-            <div style={{ marginBottom: "24px" }}>
+            {/* コメント */}
+            <div style={{ marginBottom: "32px" }}>
               <label htmlFor="comment" style={labelStyle}>
                 コーディネートについて一言
               </label>
@@ -480,10 +555,10 @@ export default function SubmitForm() {
                 {...register("comment")}
                 style={{
                   ...inputStyle,
-                  minHeight: "120px",
-                  resize: "both",
-                  lineHeight: 1.8,
-                  padding: "12px 14px",
+                  minHeight: "130px",
+                  resize: "vertical" as const,
+                  lineHeight: 1.9,
+                  padding: "14px 16px",
                   overflow: "auto",
                 }}
                 className=""
@@ -491,35 +566,53 @@ export default function SubmitForm() {
             </div>
           </div>
 
-          {/* Submit */}
+          {/* ══════ 送信ボタン ══════ */}
           <button
             type="submit"
             disabled={isSubmitting || uploading}
             style={{
-              width: "100%", height: "56px",
+              width: "100%",
+              minHeight: "56px",
               background: isSubmitting || uploading ? "#e0e8f0" : NAVY,
-              color: isSubmitting || uploading ? TEXT_MUTED : "#f0ede8",
-              border: "none", borderRadius: "6px",
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "0.75rem", fontWeight: 400,
-              letterSpacing: "0.15em",
-              display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
+              color: isSubmitting || uploading ? TEXT_MUTED : CREAM,
+              border: "none",
+              borderRadius: "12px",
+              fontFamily: "'Zen Kaku Gothic New', sans-serif",
+              fontSize: "0.95rem",
+              fontWeight: 500,
+              letterSpacing: "0.08em",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
               cursor: isSubmitting || uploading ? "not-allowed" : "pointer",
-              transition: "all 0.2s",
+              transition: "transform 0.15s, opacity 0.15s",
+              WebkitTapHighlightColor: "transparent",
+            }}
+            onTouchStart={(e) => {
+              if (!isSubmitting && !uploading) {
+                e.currentTarget.style.transform = "scale(0.98)";
+                e.currentTarget.style.opacity = "0.9";
+              }
+            }}
+            onTouchEnd={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.opacity = "1";
             }}
           >
             {isSubmitting ? (
-              <><Loader2 style={{ width: 16, height: 16 }} className="animate-spin" /> 送信中...</>
+              <><Loader2 style={{ width: 18, height: 18 }} className="animate-spin" /> 送信中...</>
             ) : (
-              <><Send style={{ width: 15, height: 15 }} /> 送信する</>
+              <><Send style={{ width: 17, height: 17 }} /> 送信する</>
             )}
           </button>
 
           <p style={{
             fontFamily: "'Zen Kaku Gothic New', sans-serif",
-            fontSize: "0.65rem", color: TEXT_LIGHT,
+            fontSize: "0.72rem", color: TEXT_LIGHT,
             textAlign: "center", marginTop: "16px",
-            letterSpacing: "0.06em", paddingBottom: "32px",
+            letterSpacing: "0.04em", paddingBottom: "24px",
+            lineHeight: 1.8,
           }}>
             投稿内容は管理者の確認後、ECサイトに掲載されます
           </p>

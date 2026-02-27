@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import {
   Trash2, ChevronLeft, ChevronRight,
   User, Ruler, Weight, Shirt, MessageSquare, Loader2, LogIn,
-  Download, Calendar, MapPin, XCircle
+  Download, Calendar, MapPin, XCircle, ArrowLeft, Search
 } from "lucide-react";
 import { Link } from "wouter";
 import { getLoginUrl } from "@/const";
@@ -60,7 +60,6 @@ function generateCsv(posts: Post[]): string {
     ].map(escape).join(",");
   });
 
-  // BOM付きUTF-8でExcelが文字化けしないようにする
   return "\uFEFF" + [headers.join(","), ...rows].join("\n");
 }
 
@@ -118,7 +117,6 @@ export default function AdminDashboard() {
     setPhotoIndex(0);
   };
 
-  // フィルタリング
   const filteredPosts = posts
     ? (posts as Post[]).filter((p) => {
         if (!searchQuery) return true;
@@ -134,7 +132,7 @@ export default function AdminDashboard() {
   // Auth check
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex items-center justify-center" style={{ minHeight: "100dvh" }}>
         <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
       </div>
     );
@@ -142,14 +140,14 @@ export default function AdminDashboard() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6 gap-6">
-        <h2 className="text-2xl">管理者ログイン</h2>
+      <div className="flex flex-col items-center justify-center px-6 gap-6" style={{ minHeight: "100dvh" }}>
+        <h2 className="text-xl font-medium">管理者ログイン</h2>
         <p className="text-sm text-muted-foreground text-center">
           管理画面にアクセスするにはログインが必要です
         </p>
         <a href={getLoginUrl()}>
-          <Button className="gap-2">
-            <LogIn className="w-4 h-4" />
+          <Button className="gap-2 min-h-[48px] px-8 text-base">
+            <LogIn className="w-5 h-5" />
             ログインする
           </Button>
         </a>
@@ -159,65 +157,66 @@ export default function AdminDashboard() {
 
   if (user?.role !== "admin") {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6 gap-4">
+      <div className="flex flex-col items-center justify-center px-6 gap-4" style={{ minHeight: "100dvh" }}>
         <XCircle className="w-12 h-12 text-destructive" strokeWidth={1.5} />
-        <h2 className="text-2xl">アクセス権限がありません</h2>
+        <h2 className="text-xl font-medium">アクセス権限がありません</h2>
         <p className="text-sm text-muted-foreground">管理者のみアクセス可能です</p>
         <Link href="/">
-          <Button variant="outline">トップに戻る</Button>
+          <Button variant="outline" className="min-h-[48px] px-8">トップに戻る</Button>
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
+    <div className="bg-background" style={{ minHeight: "100dvh" }}>
+      {/* ── ヘッダー ── */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border">
-        <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <Link href="/">
-              <span className="text-xs text-muted-foreground tracking-widest uppercase">← Back</span>
-            </Link>
-            <span className="text-border">|</span>
-            <h1 className="text-sm font-medium tracking-widest uppercase">EDWARD'S Staff Snap — Admin</h1>
-          </div>
+        <div className="px-4 h-[52px] flex items-center justify-between gap-3">
+          <Link href="/">
+            <button className="flex items-center gap-1.5 text-muted-foreground min-h-[44px] min-w-[44px] bg-transparent border-none cursor-pointer p-1"
+              style={{ WebkitTapHighlightColor: "transparent" }}>
+              <ArrowLeft className="w-[18px] h-[18px]" />
+              <span className="text-xs tracking-wider">戻る</span>
+            </button>
+          </Link>
+          <span className="text-xs font-medium tracking-[0.2em] uppercase">Admin</span>
           <Button
             onClick={handleExportCsv}
             variant="outline"
             size="sm"
-            className="gap-1.5 text-xs"
+            className="gap-1.5 text-xs min-h-[40px] px-3"
             disabled={!exportData || exportData.length === 0}
           >
-            <Download className="w-3.5 h-3.5" />
-            CSV出力
+            <Download className="w-4 h-4" />
+            CSV
           </Button>
         </div>
       </header>
 
-      <div className="max-w-5xl mx-auto px-4 py-8">
-        {/* Title & Stats */}
-        <div className="flex items-end justify-between mb-6">
-          <div>
-            <h2 className="text-3xl mb-1">受信一覧</h2>
-            <p className="text-xs text-muted-foreground">
-              {posts?.length ?? 0}件の投稿
-            </p>
-          </div>
+      <div className="px-4 py-5">
+        {/* ── タイトル ── */}
+        <div className="mb-4">
+          <h2 className="text-xl font-medium mb-0.5">受信一覧</h2>
+          <p className="text-xs text-muted-foreground">
+            {posts?.length ?? 0}件の投稿
+          </p>
         </div>
 
-        {/* Search */}
-        <div className="mb-6">
+        {/* ── 検索 ── */}
+        <div className="mb-5 relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
           <input
             type="text"
             placeholder="名前・店舗・着用服で検索..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            className="w-full h-[48px] pl-10 pr-4 rounded-xl border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            style={{ fontSize: "16px", WebkitAppearance: "none" as any }}
           />
         </div>
 
-        {/* Posts Grid */}
+        {/* ── 投稿一覧 ── */}
         {isLoading ? (
           <div className="flex items-center justify-center py-20">
             <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
@@ -230,53 +229,54 @@ export default function AdminDashboard() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="flex flex-col gap-3">
             {filteredPosts.map((post) => {
               const mainPhoto = post.photos[0];
               return (
                 <div
                   key={post.id}
                   onClick={() => openDetail(post)}
-                  className="bg-card border border-border rounded-lg overflow-hidden cursor-pointer hover:shadow-md transition-all group"
+                  className="bg-card border border-border rounded-xl overflow-hidden cursor-pointer active:scale-[0.99] transition-transform"
+                  style={{ WebkitTapHighlightColor: "transparent" }}
                 >
-                  {/* Photo */}
-                  <div className="aspect-[4/3] bg-muted overflow-hidden">
-                    {mainPhoto ? (
-                      <img
-                        src={mainPhoto.url}
-                        alt={post.staffName}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Shirt className="w-8 h-8 text-muted-foreground/30" strokeWidth={1} />
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Info */}
-                  <div className="p-3">
-                    <div className="flex items-start justify-between gap-2 mb-1.5">
-                      <div>
-                        <p className="font-medium text-sm">{post.staffName}</p>
-                        <p className="text-xs text-muted-foreground flex items-center gap-1">
-                          <MapPin className="w-3 h-3" />
-                          {post.storeName}
-                        </p>
-                      </div>
-                      {post.photos.length > 1 && (
-                        <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
-                          {post.photos.length}枚
-                        </span>
+                  <div className="flex">
+                    {/* サムネイル */}
+                    <div className="w-[100px] min-h-[100px] bg-muted flex-shrink-0">
+                      {mainPhoto ? (
+                        <img
+                          src={mainPhoto.url}
+                          alt={post.staffName}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <Shirt className="w-6 h-6 text-muted-foreground/30" strokeWidth={1} />
+                        </div>
                       )}
                     </div>
-                    <p className="text-xs text-muted-foreground line-clamp-2 mb-2">
-                      {post.outfitDescription}
-                    </p>
-                    <p className="text-[10px] text-muted-foreground flex items-center gap-1">
-                      <Calendar className="w-3 h-3" />
-                      {new Date(post.createdAt).toLocaleDateString("ja-JP")}
-                    </p>
+
+                    {/* 情報 */}
+                    <div className="flex-1 p-3 min-w-0">
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <p className="font-medium text-sm truncate">{post.staffName}</p>
+                        {post.photos.length > 1 && (
+                          <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded flex-shrink-0">
+                            {post.photos.length}枚
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground flex items-center gap-1 mb-1.5">
+                        <MapPin className="w-3 h-3 flex-shrink-0" />
+                        <span className="truncate">{post.storeName}</span>
+                      </p>
+                      <p className="text-xs text-muted-foreground line-clamp-1 mb-1.5">
+                        {post.outfitDescription}
+                      </p>
+                      <p className="text-[10px] text-muted-foreground/70 flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        {new Date(post.createdAt).toLocaleDateString("ja-JP")}
+                      </p>
+                    </div>
                   </div>
                 </div>
               );
@@ -285,14 +285,14 @@ export default function AdminDashboard() {
         )}
       </div>
 
-      {/* Detail Modal */}
+      {/* ── 詳細モーダル ── */}
       <Dialog open={!!selectedPost} onOpenChange={(open) => !open && setSelectedPost(null)}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0">
+        <DialogContent className="max-w-lg max-h-[92dvh] overflow-y-auto p-0 rounded-t-2xl sm:rounded-2xl mx-2">
           {selectedPost && (
             <>
-              {/* Photo Carousel */}
+              {/* 写真カルーセル */}
               {selectedPost.photos.length > 0 && (
-                <div className="relative bg-muted aspect-video">
+                <div className="relative bg-muted" style={{ aspectRatio: "3/4", maxHeight: "50dvh" }}>
                   <img
                     src={selectedPost.photos[photoIndex]?.url}
                     alt="コーディネート写真"
@@ -303,66 +303,68 @@ export default function AdminDashboard() {
                       <button
                         onClick={() => setPhotoIndex((i) => Math.max(0, i - 1))}
                         disabled={photoIndex === 0}
-                        className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-1.5 disabled:opacity-30"
+                        className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-2 disabled:opacity-30 min-w-[40px] min-h-[40px] flex items-center justify-center"
+                        style={{ WebkitTapHighlightColor: "transparent" }}
                       >
-                        <ChevronLeft className="w-4 h-4" />
+                        <ChevronLeft className="w-5 h-5" />
                       </button>
                       <button
                         onClick={() => setPhotoIndex((i) => Math.min(selectedPost.photos.length - 1, i + 1))}
                         disabled={photoIndex === selectedPost.photos.length - 1}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-1.5 disabled:opacity-30"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-2 disabled:opacity-30 min-w-[40px] min-h-[40px] flex items-center justify-center"
+                        style={{ WebkitTapHighlightColor: "transparent" }}
                       >
-                        <ChevronRight className="w-4 h-4" />
+                        <ChevronRight className="w-5 h-5" />
                       </button>
-                      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+                      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
                         {selectedPost.photos.map((_, i) => (
                           <button
                             key={i}
                             onClick={() => setPhotoIndex(i)}
-                            className={`w-1.5 h-1.5 rounded-full transition-all ${
-                              i === photoIndex ? "bg-white" : "bg-white/40"
+                            className={`w-2 h-2 rounded-full transition-all ${
+                              i === photoIndex ? "bg-white scale-125" : "bg-white/40"
                             }`}
+                            style={{ minWidth: "8px", minHeight: "8px" }}
                           />
                         ))}
                       </div>
                     </>
                   )}
-                  {/* Photo count */}
                   {selectedPost.photos.length > 1 && (
-                    <div className="absolute top-3 right-3 bg-black/50 text-white text-xs px-2 py-0.5 rounded-full">
+                    <div className="absolute top-3 right-3 bg-black/50 text-white text-xs px-2.5 py-1 rounded-full">
                       {photoIndex + 1} / {selectedPost.photos.length}
                     </div>
                   )}
                 </div>
               )}
 
-              <div className="p-6">
+              <div className="p-5">
                 <DialogHeader className="mb-1">
-                  <DialogTitle className="text-2xl">{selectedPost.staffName}</DialogTitle>
+                  <DialogTitle className="text-xl">{selectedPost.staffName}</DialogTitle>
                 </DialogHeader>
                 <p className="text-sm text-muted-foreground flex items-center gap-1 mb-4">
                   <MapPin className="w-3.5 h-3.5" />
                   {selectedPost.storeName}
                 </p>
 
-                {/* Staff Info */}
-                <div className="flex gap-3 mb-5 flex-wrap">
+                {/* スタッフ情報 */}
+                <div className="flex gap-2 mb-5 flex-wrap">
                   {selectedPost.age && (
-                    <div className="bg-muted rounded-lg px-4 py-2.5 text-center">
+                    <div className="bg-muted rounded-xl px-4 py-2.5 text-center flex-1 min-w-[70px]">
                       <User className="w-4 h-4 mx-auto mb-1 text-muted-foreground" strokeWidth={1.5} />
                       <p className="text-[10px] text-muted-foreground">年齢</p>
                       <p className="text-sm font-medium">{selectedPost.age}歳</p>
                     </div>
                   )}
                   {selectedPost.height && (
-                    <div className="bg-muted rounded-lg px-4 py-2.5 text-center">
+                    <div className="bg-muted rounded-xl px-4 py-2.5 text-center flex-1 min-w-[70px]">
                       <Ruler className="w-4 h-4 mx-auto mb-1 text-muted-foreground" strokeWidth={1.5} />
                       <p className="text-[10px] text-muted-foreground">身長</p>
                       <p className="text-sm font-medium">{selectedPost.height}cm</p>
                     </div>
                   )}
                   {selectedPost.weight && (
-                    <div className="bg-muted rounded-lg px-4 py-2.5 text-center">
+                    <div className="bg-muted rounded-xl px-4 py-2.5 text-center flex-1 min-w-[70px]">
                       <Weight className="w-4 h-4 mx-auto mb-1 text-muted-foreground" strokeWidth={1.5} />
                       <p className="text-[10px] text-muted-foreground">体重</p>
                       <p className="text-sm font-medium">{selectedPost.weight}kg</p>
@@ -370,13 +372,13 @@ export default function AdminDashboard() {
                   )}
                 </div>
 
-                {/* Outfit */}
+                {/* 着用服 */}
                 <div className="mb-4">
                   <div className="flex items-center gap-2 mb-2">
                     <Shirt className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
                     <h4 className="text-xs tracking-widest uppercase text-muted-foreground">着用服</h4>
                   </div>
-                  <p className="text-sm whitespace-pre-wrap leading-relaxed bg-muted rounded-lg p-3">
+                  <p className="text-sm whitespace-pre-wrap leading-relaxed bg-muted rounded-xl p-3.5">
                     {selectedPost.outfitDescription}
                   </p>
                 </div>
@@ -387,13 +389,13 @@ export default function AdminDashboard() {
                       <MessageSquare className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
                       <h4 className="text-xs tracking-widest uppercase text-muted-foreground">コメント</h4>
                     </div>
-                    <p className="text-sm leading-relaxed italic text-muted-foreground bg-muted rounded-lg p-3">
+                    <p className="text-sm leading-relaxed italic text-muted-foreground bg-muted rounded-xl p-3.5">
                       "{selectedPost.comment}"
                     </p>
                   </div>
                 )}
 
-                {/* Photo URLs for download */}
+                {/* 写真ダウンロード */}
                 {selectedPost.photos.length > 0 && (
                   <div className="mb-5">
                     <h4 className="text-xs tracking-widest uppercase text-muted-foreground mb-2">写真ダウンロード</h4>
@@ -404,7 +406,8 @@ export default function AdminDashboard() {
                           href={photo.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xs px-2.5 py-1 border border-border rounded hover:bg-muted transition-colors"
+                          className="text-xs px-3 py-2 border border-border rounded-lg hover:bg-muted transition-colors min-h-[40px] flex items-center"
+                          style={{ WebkitTapHighlightColor: "transparent" }}
                         >
                           写真{i + 1}を開く
                         </a>
@@ -418,13 +421,13 @@ export default function AdminDashboard() {
                 <div className="flex items-center justify-between">
                   <p className="text-xs text-muted-foreground flex items-center gap-1">
                     <Calendar className="w-3.5 h-3.5" />
-                    受信：{new Date(selectedPost.createdAt).toLocaleString("ja-JP")}
+                    {new Date(selectedPost.createdAt).toLocaleString("ja-JP")}
                   </p>
                   <Button
                     onClick={() => setConfirmDelete(selectedPost.id)}
                     variant="outline"
                     size="sm"
-                    className="gap-1.5 text-destructive border-destructive/30 hover:bg-destructive/5"
+                    className="gap-1.5 text-destructive border-destructive/30 hover:bg-destructive/5 min-h-[40px]"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                     削除
@@ -436,19 +439,19 @@ export default function AdminDashboard() {
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confirm Dialog */}
+      {/* ── 削除確認 ── */}
       <Dialog open={confirmDelete !== null} onOpenChange={() => setConfirmDelete(null)}>
-        <DialogContent className="max-w-sm">
+        <DialogContent className="max-w-sm mx-4 rounded-2xl">
           <DialogHeader>
             <DialogTitle>投稿を削除しますか？</DialogTitle>
           </DialogHeader>
           <p className="text-sm text-muted-foreground">この操作は取り消せません。写真も含めて削除されます。</p>
           <div className="flex gap-2 mt-2">
-            <Button variant="outline" className="flex-1" onClick={() => setConfirmDelete(null)}>
+            <Button variant="outline" className="flex-1 min-h-[48px]" onClick={() => setConfirmDelete(null)}>
               キャンセル
             </Button>
             <Button
-              className="flex-1 bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+              className="flex-1 min-h-[48px] bg-destructive hover:bg-destructive/90 text-destructive-foreground"
               onClick={() => confirmDelete && deletePost.mutate({ id: confirmDelete })}
               disabled={deletePost.isPending}
             >

@@ -1,207 +1,252 @@
 import { Link } from "wouter";
-import { ArrowUpRight, LayoutDashboard } from "lucide-react";
+import { ArrowRight, LayoutDashboard } from "lucide-react";
 import { useAuth } from "@/_core/hooks/useAuth";
+import { motion } from "framer-motion";
 
-// ネイビーカラーパレット
 const NAVY = "#0d1b2a";
-const NAVY_LIGHT = "#1a2e42";
+const NAVY_LIGHT = "#1b2d44";
 const NAVY_BORDER = "#243a52";
 const CREAM = "#f0ede8";
-const MUTED = "#7a9ab5";
+const MUTED = "#8eaec4";
+const WHITE = "#ffffff";
 
 export default function Home() {
   const { user } = useAuth();
 
   return (
     <div
-      className="min-h-screen flex flex-col"
+      className="min-h-[100dvh] flex flex-col overflow-x-hidden"
       style={{ background: NAVY, color: CREAM }}
     >
-      {/* Nav */}
-      <header className="px-6 pt-8 pb-0 flex items-center justify-between">
+      {/* Header */}
+      <header
+        className="flex items-center justify-between"
+        style={{ padding: "20px 24px 0" }}
+      >
         <span
           style={{
             fontFamily: "'DM Sans', sans-serif",
-            fontSize: "0.72rem",
-            fontWeight: 300,
-            letterSpacing: "0.18em",
-            color: CREAM,
+            fontSize: "0.68rem",
+            fontWeight: 400,
+            letterSpacing: "0.15em",
+            color: MUTED,
           }}
         >
-          EDWARD'Sスタッフ専用フォーム
+          EDWARD'S スタッフ専用フォーム
         </span>
         {user?.role === "admin" && (
           <Link href="/admin">
             <button
               style={{
                 fontFamily: "'DM Sans', sans-serif",
-                fontSize: "0.65rem",
-                letterSpacing: "0.15em",
+                fontSize: "0.6rem",
+                letterSpacing: "0.12em",
                 fontWeight: 400,
                 color: MUTED,
                 background: "transparent",
                 border: `1px solid ${NAVY_BORDER}`,
                 borderRadius: "100px",
-                padding: "6px 14px",
+                padding: "8px 14px",
                 display: "flex",
                 alignItems: "center",
                 gap: "6px",
                 cursor: "pointer",
+                minHeight: "36px",
               }}
             >
-              <LayoutDashboard style={{ width: 11, height: 11 }} />
-              管理画面
+              <LayoutDashboard style={{ width: 12, height: 12 }} />
+              管理
             </button>
           </Link>
         )}
       </header>
 
       {/* Hero */}
-      <main className="flex-1 flex flex-col justify-between px-6 pt-16 pb-12">
+      <main
+        className="flex-1 flex flex-col justify-between"
+        style={{ padding: "40px 24px 24px" }}
+      >
         <div>
-          <p
+          {/* Sub label */}
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
             style={{
               fontFamily: "'DM Sans', sans-serif",
-              fontSize: "0.6rem",
-              letterSpacing: "0.35em",
+              fontSize: "0.58rem",
+              letterSpacing: "0.4em",
               color: MUTED,
-              marginBottom: "1.5rem",
+              marginBottom: "20px",
               textTransform: "uppercase",
             }}
           >
             Staff Coordinate
-          </p>
+          </motion.p>
 
-          {/* Large headline */}
-          <h1
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "clamp(3.5rem, 15vw, 7rem)",
-              fontWeight: 300,
-              lineHeight: 0.9,
-              letterSpacing: "-0.03em",
-              color: CREAM,
-              marginBottom: "0.2rem",
-            }}
+          {/* Large headline - モバイル画面幅にフィット */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
           >
-            STAFF'S
-          </h1>
-          <h1
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "clamp(3.5rem, 15vw, 7rem)",
-              fontWeight: 300,
-              lineHeight: 0.9,
-              letterSpacing: "-0.03em",
-              color: "transparent",
-              WebkitTextStroke: `1px ${CREAM}`,
-              marginBottom: "0.2rem",
-            }}
-          >
-            BUY
-          </h1>
-          <h1
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "clamp(3.5rem, 15vw, 7rem)",
-              fontWeight: 300,
-              lineHeight: 0.9,
-              letterSpacing: "-0.03em",
-              color: "transparent",
-              WebkitTextStroke: `1px ${CREAM}`,
-              marginBottom: "2.5rem",
-            }}
-          >
-            APP
-          </h1>
+            <h1
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "min(18vw, 5rem)",
+                fontWeight: 300,
+                lineHeight: 0.92,
+                letterSpacing: "-0.02em",
+                color: CREAM,
+                margin: 0,
+              }}
+            >
+              STAFF'S
+            </h1>
+            <h1
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "min(18vw, 5rem)",
+                fontWeight: 300,
+                lineHeight: 0.92,
+                letterSpacing: "-0.02em",
+                color: "transparent",
+                WebkitTextStroke: `1px ${CREAM}`,
+                margin: "4px 0",
+              }}
+            >
+              BUY
+            </h1>
+            <h1
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "min(18vw, 5rem)",
+                fontWeight: 300,
+                lineHeight: 0.92,
+                letterSpacing: "-0.02em",
+                color: "transparent",
+                WebkitTextStroke: `1px ${CREAM}`,
+                margin: 0,
+              }}
+            >
+              APP
+            </h1>
+          </motion.div>
 
           {/* Divider */}
-          <div
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
             style={{
               width: "100%",
               height: "1px",
               background: `linear-gradient(to right, ${NAVY_BORDER}, transparent)`,
-              marginBottom: "2rem",
+              marginTop: "32px",
+              marginBottom: "24px",
+              transformOrigin: "left",
             }}
           />
 
           {/* Description */}
-          <p
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.7 }}
             style={{
               fontFamily: "'Zen Kaku Gothic New', sans-serif",
-              fontSize: "0.72rem",
+              fontSize: "0.82rem",
               fontWeight: 300,
-              letterSpacing: "0.06em",
-              lineHeight: 1.8,
+              letterSpacing: "0.04em",
+              lineHeight: 1.9,
               color: MUTED,
             }}
           >
-            着用アイテムや写真を入力して送信してください。<br />
+            着用アイテムや写真を入力して送信してください。
+            <br />
             情報はECサイトに掲載されます。
-          </p>
+          </motion.p>
         </div>
 
-        {/* Bottom section */}
-        <div style={{ marginTop: "3rem" }}>
-          {/* CTA */}
+        {/* CTA Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.9 }}
+          style={{ marginTop: "40px" }}
+        >
           <Link href="/submit">
             <button
               style={{
                 width: "100%",
-                height: "60px",
+                minHeight: "56px",
                 background: CREAM,
                 color: NAVY,
                 border: "none",
-                borderRadius: "8px",
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: "0.75rem",
-                fontWeight: 400,
-                letterSpacing: "0.15em",
+                borderRadius: "12px",
+                fontFamily: "'Zen Kaku Gothic New', sans-serif",
+                fontSize: "0.88rem",
+                fontWeight: 500,
+                letterSpacing: "0.08em",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
                 padding: "0 24px",
                 cursor: "pointer",
-                transition: "opacity 0.2s",
+                transition: "transform 0.15s, opacity 0.15s",
+                WebkitTapHighlightColor: "transparent",
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+              onTouchStart={(e) => {
+                e.currentTarget.style.transform = "scale(0.98)";
+                e.currentTarget.style.opacity = "0.9";
+              }}
+              onTouchEnd={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.opacity = "1";
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
               onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
             >
               <span>入力フォームへ進む</span>
-              <ArrowUpRight style={{ width: 18, height: 18 }} />
+              <ArrowRight style={{ width: 20, height: 20 }} />
             </button>
           </Link>
-        </div>
+        </motion.div>
       </main>
 
       {/* Footer */}
       <footer
-        className="px-6 py-5 flex flex-col gap-1"
-        style={{ borderTop: `1px solid ${NAVY_BORDER}` }}
+        style={{
+          padding: "16px 24px 28px",
+          borderTop: `1px solid ${NAVY_BORDER}`,
+        }}
       >
-        <div className="flex items-center justify-between">
-          <span
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "0.65rem",
-              letterSpacing: "0.2em",
-              color: "#ffffff",
-              fontWeight: 300,
-            }}
-          >
-            © EDWARD'S Staff's Buy App
-          </span>
-        </div>
-        <span
+        <p
           style={{
             fontFamily: "'DM Sans', sans-serif",
-            fontSize: "0.55rem",
-            letterSpacing: "0.12em",
-            color: "#ffffff",
+            fontSize: "0.6rem",
+            letterSpacing: "0.18em",
+            color: WHITE,
+            fontWeight: 300,
+            margin: 0,
+            marginBottom: "4px",
+          }}
+        >
+          © EDWARD'S Staff's Buy App
+        </p>
+        <p
+          style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "0.52rem",
+            letterSpacing: "0.1em",
+            color: WHITE,
+            fontWeight: 300,
+            margin: 0,
+            opacity: 0.7,
           }}
         >
           Designed &amp; Developed by Shigesato Kurita
-        </span>
+        </p>
       </footer>
     </div>
   );
