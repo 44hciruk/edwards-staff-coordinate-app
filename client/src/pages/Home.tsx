@@ -113,7 +113,7 @@ export default function Home() {
                 margin: 0,
               }}
             >
-              STAFF'S
+              EDWARD'S
             </h1>
             <h1
               style={{
@@ -127,7 +127,7 @@ export default function Home() {
                 margin: "4px 0",
               }}
             >
-              BUY
+              STUFF'S
             </h1>
             <h1
               style={{
@@ -141,7 +141,7 @@ export default function Home() {
                 margin: 0,
               }}
             >
-              APP
+              BUY APP
             </h1>
           </motion.div>
 
@@ -185,7 +185,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.9 }}
-          style={{ marginTop: "40px", flexShrink: 0 }}
+          style={{ marginTop: "40px", flexShrink: 0, textAlign: "center" }}
         >
           <Link href="/submit">
             <button
