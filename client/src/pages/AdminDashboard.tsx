@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import {
   Trash2, ChevronLeft, ChevronRight,
   User, Ruler, Weight, Shirt, MessageSquare, Loader2, LogIn,
-  Download, Calendar, MapPin, XCircle
+  Download, Calendar, MapPin, XCircle, FolderDown
 } from "lucide-react";
 import { Link } from "wouter";
 import { getLoginUrl } from "@/const";
@@ -396,7 +396,22 @@ export default function AdminDashboard() {
                 {/* Photo URLs for download */}
                 {selectedPost.photos.length > 0 && (
                   <div className="mb-5">
-                    <h4 className="text-xs tracking-widest uppercase text-muted-foreground mb-2">写真ダウンロード</h4>
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-xs tracking-widest uppercase text-muted-foreground">写真ダウンロード</h4>
+                      <button
+                        onClick={async () => {
+                          // 各写真を順番に新タブで開く（ブラウザのポップアップブロックを避けるため順次開く）
+                          for (const photo of selectedPost.photos) {
+                            window.open(photo.url, '_blank');
+                            await new Promise(r => setTimeout(r, 300));
+                          }
+                        }}
+                        className="flex items-center gap-1 text-xs px-2.5 py-1 bg-gray-900 text-white rounded hover:bg-gray-700 transition-colors"
+                      >
+                        <FolderDown className="w-3.5 h-3.5" />
+                        全写真を開く
+                      </button>
+                    </div>
                     <div className="flex flex-wrap gap-2">
                       {selectedPost.photos.map((photo, i) => (
                         <a
@@ -406,7 +421,7 @@ export default function AdminDashboard() {
                           rel="noopener noreferrer"
                           className="text-xs px-2.5 py-1 border border-border rounded hover:bg-muted transition-colors"
                         >
-                          写真{i + 1}を開く
+                          写真{i + 1}
                         </a>
                       ))}
                     </div>
