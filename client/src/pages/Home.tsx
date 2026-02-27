@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Camera, CheckCircle, LayoutDashboard } from "lucide-react";
+import { ArrowRight, Camera, ImagePlus, LayoutDashboard } from "lucide-react";
 import { useAuth } from "@/_core/hooks/useAuth";
 
 export default function Home() {
@@ -11,9 +11,9 @@ export default function Home() {
       {/* Nav */}
       <header className="px-6 py-5 flex items-center justify-between border-b border-border">
         <div>
-          <p className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground">Staff</p>
+          <p className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground">EDWARD'S</p>
           <h1 className="text-xl leading-tight" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-            Coordinate
+            Staff Snap
           </h1>
         </div>
         {user?.role === "admin" && (
@@ -37,21 +37,21 @@ export default function Home() {
           </div>
 
           <h2 className="text-4xl leading-tight mb-4">
-            スタッフの<br />
+            今日の<br />
             <em>着こなし</em>を<br />
-            シェアしよう
+            送ってください
           </h2>
 
           <div className="h-px w-16 mx-auto my-6 bg-gradient-to-r from-transparent via-[oklch(0.78_0.08_75)] to-transparent" />
 
           <p className="text-sm text-muted-foreground leading-relaxed mb-10">
-            全国の百貨店スタッフが日々のコーディネートを投稿。
-            管理者の承認後、ECサイトに掲載されます。
+            着用アイテムや写真を入力して送信してください。<br />
+            いただいた情報はECサイトのスタッフコーディネートに掲載されます。
           </p>
 
           <Link href="/submit">
             <Button className="w-full h-12 text-sm tracking-widest uppercase gap-2">
-              コーディネートを投稿する
+              投稿フォームへ
               <ArrowRight className="w-4 h-4" />
             </Button>
           </Link>
@@ -62,11 +62,10 @@ export default function Home() {
       <section className="px-6 pb-16">
         <div className="max-w-sm mx-auto">
           <div className="h-px w-full bg-gradient-to-r from-transparent via-border to-transparent mb-10" />
-          <div className="grid grid-cols-3 gap-4 text-center">
+          <div className="grid grid-cols-2 gap-6 text-center">
             {[
-              { icon: Camera, label: "写真投稿", desc: "最大10枚" },
-              { icon: CheckCircle, label: "審査制", desc: "品質を保証" },
-              { icon: LayoutDashboard, label: "管理画面", desc: "一元管理" },
+              { icon: ImagePlus, label: "写真を複数枚送れます", desc: "最大10枚まで" },
+              { icon: Camera, label: "スマホから簡単投稿", desc: "ブラウザで完結" },
             ].map(({ icon: Icon, label, desc }) => (
               <div key={label} className="flex flex-col items-center gap-2">
                 <div className="w-10 h-10 rounded-full border border-border flex items-center justify-center">
@@ -83,7 +82,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-border px-6 py-4 text-center">
         <p className="text-[10px] text-muted-foreground tracking-widest uppercase">
-          Staff Coordinate System
+          EDWARD'S Staff Snap App
         </p>
       </footer>
     </div>

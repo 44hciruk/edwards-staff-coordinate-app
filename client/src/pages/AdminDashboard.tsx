@@ -180,7 +180,7 @@ export default function AdminDashboard() {
               <span className="text-xs text-muted-foreground tracking-widest uppercase">← Back</span>
             </Link>
             <span className="text-border">|</span>
-            <h1 className="text-sm font-medium tracking-widest uppercase">Admin</h1>
+            <h1 className="text-sm font-medium tracking-widest uppercase">EDWARD'S Staff Snap — Admin</h1>
           </div>
           <Button
             onClick={handleExportCsv}
