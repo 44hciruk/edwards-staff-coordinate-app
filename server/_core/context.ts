@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
 import { parse as parseCookieHeader } from "cookie";
 import { jwtVerify } from "jose";
 import { COOKIE_NAME } from "@shared/const";
@@ -6,8 +6,8 @@ import type { User } from "../../drizzle/schema";
 import { ENV } from "./env";
 
 export type TrpcContext = {
-  req: Request;
-  res: Response;
+  req: CreateExpressContextOptions["req"];
+  res: CreateExpressContextOptions["res"];
   user: User | null;
 };
 
@@ -15,17 +15,13 @@ function getSecret(): Uint8Array {
   return new TextEncoder().encode(ENV.jwtSecret);
 }
 
-export async function createContext({
-  req,
-  res,
-}: {
-  req: Request;
-  res: Response;
-}): Promise<TrpcContext> {
+export async function createContext(
+  opts: CreateExpressContextOptions
+): Promise<TrpcContext> {
   let user: User | null = null;
 
   try {
-    const cookieHeader = req.headers.cookie;
+    const cookieHeader = opts.req.headers.cookie;
     const cookies = cookieHeader ? parseCookieHeader(cookieHeader) : {};
     const token = cookies[COOKIE_NAME];
 
@@ -53,5 +49,5 @@ export async function createContext({
     user = null;
   }
 
-  return { req, res, user };
+  return { req: opts.req, res: opts.res, user };
 }

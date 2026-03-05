@@ -1,5 +1,4 @@
 import { TRPCError } from "@trpc/server";
-import type { Response } from "express";
 import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
@@ -32,7 +31,7 @@ export const appRouter = router({
     me: publicProcedure.query((opts) => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
-      (ctx.res as Response).clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
+      ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
       return { success: true } as const;
     }),
     login: publicProcedure
@@ -47,7 +46,7 @@ export const appRouter = router({
         }
         const token = await createAdminToken(admin.email, admin.name);
         const cookieOptions = getSessionCookieOptions(ctx.req);
-        (ctx.res as Response).cookie(COOKIE_NAME, token, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+        ctx.res.cookie(COOKIE_NAME, token, { ...cookieOptions, maxAge: ONE_YEAR_MS });
         return { success: true } as const;
       }),
   }),
