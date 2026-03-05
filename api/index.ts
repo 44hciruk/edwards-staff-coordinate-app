@@ -1,5 +1,5 @@
 import "dotenv/config";
-import express from "express";
+import express, { type Request, type Response } from "express";
 import multer from "multer";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { appRouter } from "../server/routers";
@@ -15,7 +15,7 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 16 * 1024 * 1024 },
-  fileFilter: (_req, file, cb) => {
+  fileFilter: (_req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
     if (file.mimetype.startsWith("image/")) {
       cb(null, true);
     } else {
@@ -24,7 +24,7 @@ const upload = multer({
   },
 });
 
-app.post("/api/upload/photos", upload.array("photos", 10), async (req, res) => {
+app.post("/api/upload/photos", upload.array("photos", 10), async (req: Request, res: Response) => {
   try {
     const files = req.files as Express.Multer.File[] | undefined;
     if (!files || files.length === 0) {
@@ -39,9 +39,9 @@ app.post("/api/upload/photos", upload.array("photos", 10), async (req, res) => {
       })
     );
     return res.json({ photos: uploaded });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("[Upload] Error:", err);
-    return res.status(500).json({ error: err.message || "アップロードに失敗しました" });
+    return res.status(500).json({ error: err instanceof Error ? err.message : "アップロードに失敗しました" });
   }
 });
 
