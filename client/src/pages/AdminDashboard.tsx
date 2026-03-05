@@ -6,11 +6,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { toast } from "sonner";
 import {
   Trash2, ChevronLeft, ChevronRight,
-  User, Ruler, Weight, Shirt, MessageSquare, Loader2, LogIn,
+  User, Ruler, Weight, Shirt, MessageSquare, Loader2,
   Download, Calendar, MapPin, XCircle, ArrowLeft, Search
 } from "lucide-react";
-import { Link } from "wouter";
-import { getLoginUrl } from "@/const";
+import { Link, Redirect } from "wouter";
 
 type Post = {
   id: number;
@@ -352,20 +351,7 @@ export default function AdminDashboard() {
   }
 
   if (!isAuthenticated) {
-    return (
-      <div className="flex flex-col items-center justify-center px-6 gap-6" style={{ minHeight: "100dvh" }}>
-        <h2 className="text-xl font-medium">管理者ログイン</h2>
-        <p className="text-sm text-muted-foreground text-center">
-          管理画面にアクセスするにはログインが必要です
-        </p>
-        <a href={getLoginUrl()}>
-          <Button className="gap-2 min-h-[48px] px-8 text-base">
-            <LogIn className="w-5 h-5" />
-            ログインする
-          </Button>
-        </a>
-      </div>
-    );
+    return <Redirect to="/admin/login" />;
   }
 
   if (user?.role !== "admin") {

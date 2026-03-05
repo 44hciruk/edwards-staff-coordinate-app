@@ -1,26 +1,12 @@
 {
   "version": "7",
-  "dialect": "mysql",
+  "dialect": "postgresql",
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1772185205060,
-      "tag": "0000_minor_zarek",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1772185342246,
-      "tag": "0001_spotty_iron_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1772187752043,
-      "tag": "0002_demonic_spacker_dave",
+      "version": "7",
+      "when": 1772638626131,
+      "tag": "0000_large_union_jack",
       "breakpoints": true
     }
   ]

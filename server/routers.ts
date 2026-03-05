@@ -1,9 +1,10 @@
 import { TRPCError } from "@trpc/server";
-import { COOKIE_NAME } from "@shared/const";
+import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { notifyOwner } from "./_core/notification";
+import { verifyAdminCredentials, createAdminToken } from "./_core/adminAuth";
 import {
   addPhotosToPost,
   createPost,
@@ -13,6 +14,7 @@ import {
   getPhotosForPosts,
   getPostById,
 } from "./db";
+import { storageDelete } from "./storage";
 import { z } from "zod";
 
 // Admin guard middleware
@@ -32,6 +34,21 @@ export const appRouter = router({
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
       return { success: true } as const;
     }),
+    login: publicProcedure
+      .input(z.object({ email: z.string().email(), password: z.string().min(1) }))
+      .mutation(async ({ input, ctx }) => {
+        const admin = await verifyAdminCredentials(input.email, input.password);
+        if (!admin) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "メールアドレスまたはパスワードが違います",
+          });
+        }
+        const token = await createAdminToken(admin.email, admin.name);
+        const cookieOptions = getSessionCookieOptions(ctx.req);
+        ctx.res.cookie(COOKIE_NAME, token, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+        return { success: true } as const;
+      }),
   }),
 
   // ---- 投稿関連 ----
@@ -106,11 +123,15 @@ export const appRouter = router({
         return { ...post, photos };
       }),
 
-    // 管理者: 投稿削除
+    // 管理者: 投稿削除（写真も Supabase Storage から削除）
     delete: adminProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
+        const photos = await getPhotosByPostId(input.id);
         await deletePost(input.id);
+        await Promise.allSettled(
+          photos.map((photo) => storageDelete(photo.fileKey))
+        );
         return { success: true };
       }),
 
